@@ -8,5 +8,5 @@ class banco {
   public void tira (double outcome) {
     this.saldo -= outcome;
   }
-
+}
   
