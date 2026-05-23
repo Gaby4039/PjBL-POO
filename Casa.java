@@ -1,5 +1,4 @@
 abstract class Casa {
-
 }
 
 class CasaSalario {
@@ -15,5 +14,5 @@ class CasaPremio {
 }
 
 class CasaAzar {
-    
+
 }
