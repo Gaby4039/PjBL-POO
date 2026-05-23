@@ -1,7 +1,13 @@
+import java.util.ArrayList;
+
 public class Tabuleiro {
-    private int casas_total;
-    private int casas_vinganca;
-    private int casas_acrescimo;
-    private int casas_decrescimo;
+    private ArrayList<Casa> casas;
+    private int quantidadeCasas;
+
+    public Tabuleiro() {
+        ArrayList<Carta> cartas = new ArrayList<>(quantidadeCasas);
+    }
+
 }
+
 
