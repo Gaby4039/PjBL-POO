@@ -1,9 +1,13 @@
 import java.util.Random;
 
 public class Roleta {
-    public static Random alea = new Random();
+    private Random alea;
 
-    public static int GirarRoleta() {
+    public Roleta() {
+        this.alea = new Random();
+    }
+
+    public int girar() {
         return alea.nextInt(6) + 1;
     }
 }
