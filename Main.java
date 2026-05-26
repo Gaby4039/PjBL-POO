@@ -13,6 +13,9 @@ public class Main {
         // JTextField campo1 = new
         JButton botao1 = new JButton();
 
+        Roleta roletaDoJogo = new Roleta();
+        int resultado = roletaDoJogo.girar();
+        
         janela.add(painel);
         painel.add(label);
 
