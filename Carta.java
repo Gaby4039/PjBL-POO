@@ -1,9 +1,9 @@
 public abstract class Carta {
 
     protected String descricao;
-    protected int valor;
+    protected double valor;
 
-    public Carta(String descricao, int valor) {
+    public Carta(String descricao, double valor) {
         this.descricao = descricao;
         this.valor = valor;
     }

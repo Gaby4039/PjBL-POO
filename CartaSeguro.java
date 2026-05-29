@@ -1,5 +1,5 @@
 public class CartaSeguro extends Carta{
-    public CartaSeguro(String descricao, int valor){
+    public CartaSeguro(String descricao, double valor){
         super(descricao, valor);
     }
     @Override

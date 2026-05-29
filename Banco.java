@@ -1,12 +1,33 @@
-// Criar função para distribuir dinheiro entre os jogadores a cada rodada
-class banco {
+public class Banco{
+    private double saldoBanco;
 
-  public void receba (double income){
-    this.saldo += income;
-  }
+    public Banco (){
+        this.saldoBanco = 100000000000;
+    }
+    public void pagar(Jogador jogador, double valor){
 
-  public void tira (double outcome) {
-    this.saldo -= outcome;
-  }
+        if(saldoBanco >= valor){
+            jogador.setPatrimonio(jogador.getPatrimonio() + valor);
+            saldoBanco -= valor;
+
+            System.out.println(jogador.getNome() + "Recebeu R$: " + valor);
+        }
+    }
+    public void cobrar (Jogador jogador, double valor){
+        if (jogador.getPatrimonio() >= valor){
+            jogador.setPatrimonio(jogador.getPatrimonio() - valor);
+            saldoBanco += valor;
+        System.out.println(jogador.getNome() + "Pagou R$: " + valor);
+        }
+    }
+
+    public void emprestimo(Jogador jogador, double valor){
+        pagar(jogador, valor);
+        System.out.println("Banco concedeu empréstimo.");
+    }
+
+    public double getSaldoBanco(){
+        return saldoBanco;
+    }
 }
-  
+
