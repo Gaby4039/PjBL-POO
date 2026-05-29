@@ -5,7 +5,7 @@ public class Tabuleiro {
     private int quantidadeCasas;
 
     public Tabuleiro(int quantidadeCasas) {
-        ArrayList<Carta> cartas = new ArrayList<>(quantidadeCasas);
+        ArrayList<Casa> casas = new ArrayList<>(quantidadeCasas);
     }
 
     public ArrayList<Casa> getCasas() {

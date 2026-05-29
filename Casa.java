@@ -6,138 +6,136 @@ public abstract class Casa {
         this.cor = cor;
         this.instrucao = instrucao;
     }
+
+    public String getCor() {
+        return this.cor;
+    }
+
+    public String getInstrucao() {
+        return this.instrucao;
+    }
     
-    public abstract void setInstrucao(String instrucao);
+    public void setInstrucao(String instrucao) {
+        this.instrucao = instrucao;
+    }
 }
 
-class CasaSalario extends Casa {
-    public CasaSalario(String cor, String instrucao) {
+// CLASSE CASA FINANCEIRA
+
+class CasaFinanceira extends Casa {
+    public CasaFinanceira(String cor, String instrucao) {
         super(cor, instrucao);
     }
 
-    @Override
-    public void setInstrucao(String instrucao) {
-        
-    } 
+    public String getCor() {
+        return this.getCor();
+    }
+
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
+
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
+    }
 }
 
-class CasaImposto extends Casa {
-    public CasaImposto(String cor, String instrucao) {
+// CLASSE CASA EVENTO
+
+class CasaEvento extends Casa {
+    public CasaEvento(String cor, String instrucao) {
         super(cor, instrucao);
     }
 
-    @Override
-    public void setInstrucao(String instrucao) {
+    public String getCor() {
+        return this.getCor();
+    }
 
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
+
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
     }
 }
 
-class CasaSorte extends Casa {
-    public CasaSorte(String cor, String instrucao) {
+// CLASSE CASA ESCOLHA
+
+class CasaEscolha extends Casa {
+    public CasaEscolha(String cor, String instrucao) {
         super(cor, instrucao);
     }
 
-    @Override
-    public void setInstrucao(String instrucao) {
+    public String getCor() {
+        return this.getCor();
+    }
 
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
+
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
     }
 }
 
-class CasaAzar extends Casa {
-    public CasaAzar(String cor, String instrucao) {
+// CLASSE CASA MOVIMENTO
+
+class CasaMovimento extends Casa {
+    public CasaMovimento(String cor, String instrucao) {
         super(cor, instrucao);
     }
 
-    @Override
-    public void setInstrucao(String instrucao) {
+    public String getCor() {
+        return this.getCor();
+    }
 
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
+
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
     }
 }
 
-// Classes mais genéricas herdando da base
+// CLASSE CASA ESPECIAL
 
-// CasaFamilia
-// CasaEvento
-// CasaProfissao
+class CasaEspecial extends Casa {
+    public CasaEspecial(String cor, String instrucao) {
+        super(cor, instrucao);
+    }
 
-// Classes mais específicas 
+    public String getCor() {
+        return this.getCor();
+    }
 
-class CasaDivida {
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
 
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
+    }
 }
 
-class CasaProfissao {
+// CLASSE CASA FIM
 
-}
+class CasaFim extends Casa {
+    public CasaFim(String cor, String instrucao) {
+        super(cor, instrucao);
+    }
 
-class CasaFaculdade {
+    public String getCor() {
+        return this.getCor();
+    }
 
-}
+    public String getInstrucao() {
+        return this.getInstrucao();
+    }
 
-class CasaPromocao {
-
-}
-
-class casaDemissao {
-
-}
-
-class CasaAumento {
-
-}
-
-class CasaCasamento {
-
-}
-
-class CasaFilho {
-
-}
-
-class CasaGemeos {
-
-}
-
-class CasaDivorcio {
-
-}
-
-class CasaAniversario {
-
-}
-
-class CasaVoltar {
-
-}
-
-class CasaAvancar {
-
-}
-
-class CasaPerdeTurno {
-
-}
-
-class CasaJogueNovamente {
-    
-}
-
-class CasaCompraPropriedade {
-
-}
-
-class CasaVendePropriedade {
-
-}
-
-class CasaAposentadoria {
-
-}
-
-class CasaFerias {
-
-}
-
-class CasaHospital {
-
+    public void configurarInstrucao(String instrucao) {
+        this.setInstrucao(instrucao);
+    }
 }
