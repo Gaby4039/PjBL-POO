@@ -8,6 +8,8 @@ public class Roleta {
     }
 
     public int girar() {
-        return alea.nextInt(6) + 1;
+        int resultado = alea.nextInt(6) + 1;
+        System.out.println("Roleta girou o número: " + resultado);
+        return resultado;
     }
 }

@@ -3,23 +3,33 @@ import java.util.HashMap;
 
 public class Profissao {
 
-    private static final Map<String, Double> salarios = new HashMap<>();
+    private String nome;
+    private double salario;
+
+    private static final Map<String, Double> catalogoSalarios = new HashMap<>();
 
     static {
-        salarios.put("Desenvolvedor", 5000.0);
-        salarios.put("M�dico", 15000.0);
-        salarios.put("Professor", 4500.0);
-        salarios.put("Engenheiro", 8000.0);
+        catalogoSalarios.put("Desenvolvedor", 5000.0);
+        catalogoSalarios.put("Médico", 15000.0);
+        catalogoSalarios.put("Professor", 4500.0);
+        catalogoSalarios.put("Engenheiro", 8000.0);
     }
 
-    private Profissao() {
+
+    public Profissao(String nome) {
+        this.nome = nome;
+        this.salario = consultarSalario(nome);
     }
 
-    public static Map<String, Double> getSalarios() {
-        return salarios;
-    }
+    public String getNome() { return nome; }
+    public double getSalario() { return salario; }
 
     public static double consultarSalario(String nomeDaProfissao) {
-        return salarios.getOrDefault(nomeDaProfissao, 0.0);
+        return catalogoSalarios.getOrDefault(nomeDaProfissao, 0.0);
+    }
+
+    @Override
+    public String toString() {
+        return "Profissão: " + nome + " | Salário: R$" + salario;
     }
 }
