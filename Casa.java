@@ -23,28 +23,38 @@ public abstract class Casa {
 // CLASSE CASA FINANCEIRA
 
 class CasaFinanceira extends Casa {
-    public CasaFinanceira(String cor, String instrucao) {
+    private double valor;
+
+    public CasaFinanceira(String cor, String instrucao, double valor) {
         super(cor, instrucao);
-    }
-
-    public String getCor() {
-        return this.getCor();
-    }
-
-    public String getInstrucao() {
-        return this.getInstrucao();
+        this.valor = valor;
     }
 
     public void configurarInstrucao(String instrucao) {
         this.setInstrucao(instrucao);
     }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    public
+
 }
 
 // CLASSE CASA EVENTO
 
 class CasaEvento extends Casa {
-    public CasaEvento(String cor, String instrucao) {
+    private String evento;
+    private double bonificacao;
+
+    public CasaEvento(String cor, String instrucao, String evento) {
         super(cor, instrucao);
+        this.evento = evento;
     }
 
     public String getCor() {
@@ -57,42 +67,68 @@ class CasaEvento extends Casa {
 
     public void configurarInstrucao(String instrucao) {
         this.setInstrucao(instrucao);
+    }
+
+    public double getBonificacao() {
+        return this.bonificacao;
+    }
+
+    public void setBonificacao(double valor) {
+        this.bonificacao = valor;
+    }
+
+    public void efeitoEvento(Jogador jogador) {
+        if(evento.equals("Casamento")) {
+            jogador.setCasamento(true);
+        }
+        else if(evento.equals("Ter um filho")) {
+            jogador.setFilhos(jogador.getFilhos() + 1);
+        }
+        else if(evento.equals("Ter gemeos")) {
+            jogador.setFilhos(jogador.getFilhos() + 2);
+        }
+        else if(evento.equals("Aniversario")) {
+            jogador.setPatrimonio(jogador.getPatrimonio() + bonificacao);
+        }
+        else if
+
     }
 }
 
 // CLASSE CASA ESCOLHA
 
 class CasaEscolha extends Casa {
+    String opcao;
+
     public CasaEscolha(String cor, String instrucao) {
         super(cor, instrucao);
     }
 
-    public String getCor() {
-        return this.getCor();
+    public void setOpcao(String opcao) {
+        this.opcao = opcao;
     }
 
-    public String getInstrucao() {
-        return this.getInstrucao();
+    public String getOpcao() {
+        return this.opcao;
     }
 
     public void configurarInstrucao(String instrucao) {
         this.setInstrucao(instrucao);
     }
+
+    public void mostrarOpcoes() {
+        System.out.println(opcao);
+    }
+
 }
 
 // CLASSE CASA MOVIMENTO
 
 class CasaMovimento extends Casa {
+    private int passos;
+
     public CasaMovimento(String cor, String instrucao) {
         super(cor, instrucao);
-    }
-
-    public String getCor() {
-        return this.getCor();
-    }
-
-    public String getInstrucao() {
-        return this.getInstrucao();
     }
 
     public void configurarInstrucao(String instrucao) {
@@ -107,14 +143,6 @@ class CasaEspecial extends Casa {
         super(cor, instrucao);
     }
 
-    public String getCor() {
-        return this.getCor();
-    }
-
-    public String getInstrucao() {
-        return this.getInstrucao();
-    }
-
     public void configurarInstrucao(String instrucao) {
         this.setInstrucao(instrucao);
     }
@@ -125,14 +153,6 @@ class CasaEspecial extends Casa {
 class CasaFim extends Casa {
     public CasaFim(String cor, String instrucao) {
         super(cor, instrucao);
-    }
-
-    public String getCor() {
-        return this.getCor();
-    }
-
-    public String getInstrucao() {
-        return this.getInstrucao();
     }
 
     public void configurarInstrucao(String instrucao) {

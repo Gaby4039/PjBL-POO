@@ -12,6 +12,13 @@ public class Tabuleiro {
         return casas;
     }
 
-}
+    public void setCasas(Casa casa) {
+        casas.add(casa);
+    }
 
+    //--------TESTE--------
+    // public String mostrar() {
+
+    //}
+}
 
