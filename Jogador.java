@@ -4,7 +4,10 @@ public class Jogador {
     private String cor;
     private String nome;
     private boolean carreira;
-    private Profissao profissao; 
+    private boolean faculdade;
+    private Profissao profissao;
+    private Profissao novaProfissao;
+    private boolean aposentadoria;
     private int filhos;
     private double salario;
     private double patrimonio;
@@ -16,8 +19,10 @@ public class Jogador {
 
     public Jogador(String cor, 
                 String nome,
-                boolean faculdade, // a ver (Boolean para carreira ou objetos)
-                Profissao profissao, // a ver 
+                boolean carreira,
+                boolean faculdade, 
+                Profissao profissao,
+                boolean aposentadoria,
                 int filhos, 
                 double salario,
                 double patrimonio,
@@ -37,6 +42,18 @@ public class Jogador {
 
     public String getNome() {
         return nome;
+    }
+
+    public boolean getCarreira() {
+        return carreira;
+    }
+
+    public boolean getFaculdade() {
+        return faculdade;
+    }
+
+    public Profissao getProfissao() {
+        return profissao;
     }
 
     public int getFilhos() {
@@ -59,22 +76,9 @@ public class Jogador {
         return seguro;
     }
 
-    public void setSalario(double salario) {
-        this.salario = salario;
+    public int getCasas() {
+        return casas;
     }
-
-    public void setPatrimonio(double patrimonio) {
-        this.patrimonio = patrimonio;
-    }
-
-    public void setCasamento(boolean casamento) {
-        this.casamento = casamento;
-    }
-
-    public void setSeguro(boolean seguro) {
-        this.seguro = seguro;
-    }
-
 
     public ArrayList<Propriedade> getPropriedades() {
         return propriedades;
@@ -93,8 +97,36 @@ public class Jogador {
         this.nome = nome;
     }
 
+    public void setCarreira(boolean carreira) {
+        this.carreira = carreira;
+    }
+
+    public void setFaculdade(boolean faculdade) {
+        this.faculdade = faculdade;
+    }
+
+    public void setProfissao(Profissao profissao) {
+        this.profissao = profissao;
+    }
+
     public void setFilhos(int filhos) {
         this.filhos = filhos;
+    }
+
+     public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public void setPatrimonio(double patrimonio) {
+        this.patrimonio = patrimonio;
+    }
+
+    public void setCasamento(boolean casamento) {
+        this.casamento = casamento;
+    }
+
+    public void setSeguro(boolean seguro) {
+        this.seguro = seguro;
     }
 
     public void avancarCasas(int casas) {
@@ -151,4 +183,17 @@ public class Jogador {
     public void terFilho() {
         this.filhos += 1;
     }
+
+    public void fazer_aniversario(double presente) {
+        this.patrimonio += presente;
+    }
+
+    public void promocao(double novoSalario) {
+        this.salario = novoSalario;
+    }
+
+    public void aposentar() {
+        this.aposentadoria = true;
+    }
+
 }
