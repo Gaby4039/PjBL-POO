@@ -1,0 +1,88 @@
+import javax.swing.*;
+import java.awt.*;
+
+public class TelaJogo extends JFrame {
+
+    private Jogador jogador;
+    private PainelTabuleiro painel;
+
+    private JLabel lblNome;
+    private JLabel lblPatrimonio;
+    private JLabel lblCasa;
+
+    public TelaJogo() {
+
+        jogador = new Jogador(
+                "Azul",
+                "Player 1",
+                false,
+                null,
+                0,
+                3000,
+                10000,
+                false,
+                false,
+                1
+        );
+
+        setTitle("Jogo da Vida");
+        setSize(1300,750);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        setLayout(new BorderLayout());
+
+        painel = new PainelTabuleiro(jogador);
+
+        add(painel,BorderLayout.CENTER);
+
+        JPanel lateral = new JPanel();
+
+        lateral.setPreferredSize(
+                new Dimension(250,700));
+
+        lateral.setLayout(
+                new GridLayout(10,1));
+
+        lblNome =
+                new JLabel(
+                        "Jogador: "
+                                + jogador.getNome());
+
+        lblPatrimonio =
+                new JLabel(
+                        "Patrimônio: R$ "
+                                + jogador.getPatrimonio());
+
+        lblCasa =
+                new JLabel(
+                        "Casa: "
+                                + jogador.getCasas());
+
+        JButton btnRoleta =
+                new JButton("Girar Roleta");
+
+        btnRoleta.addActionListener(e -> jogar());
+
+        lateral.add(lblNome);
+        lateral.add(lblPatrimonio);
+        lateral.add(lblCasa);
+        lateral.add(btnRoleta);
+
+        add(lateral,BorderLayout.EAST);
+    }
+
+    private void jogar(){
+
+        int giro =
+                (int)(Math.random()*6)+1;
+
+        jogador.avancarCasas(giro);
+
+        lblCasa.setText(
+                "Casa: "
+                        + jogador.getCasas());
+
+        painel.repaint();
+    }
+}

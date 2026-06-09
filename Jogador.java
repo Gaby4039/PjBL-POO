@@ -16,8 +16,8 @@ public class Jogador implements Movimentavel {
     private int casas;
     private int turno;
     private boolean turnoAtivo;
-    private ArrayList<Propriedade> propriedades;
-    private ArrayList<Carta> cartas;
+    private final ArrayList<Propriedade> propriedades;
+    private final ArrayList<Carta> cartas;
 
     public Jogador(String cor,
                    String nome,
