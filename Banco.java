@@ -2,7 +2,7 @@ public class Banco{
     private double saldoBanco;
 
     public Banco (){
-        this.saldoBanco = 100000000000;
+        this.saldoBanco = 1000000000;
     }
     public void pagar(Jogador jogador, double valor){
 
