@@ -3,66 +3,31 @@ import java.util.ArrayList;
 public class Jogador implements Movimentavel {
     private String cor;
     private String nome;
-    private boolean carreira;
-    private boolean faculdade;
     private Profissao profissao;
-    private Profissao novaProfissao;
-    private boolean aposentadoria;
-    private int filhos;
+    private boolean faculdade;
+    private boolean aposentadoria = false;
+    private int filhos = 0;
     private double salario;
-    private double patrimonio;
-    private boolean casamento;
-    private boolean seguro;
-    private int casas;
-    private int turno;
-    private boolean turnoAtivo;
+    private double patrimonio = 10000.00;
+    private boolean casamento = false;
+    private boolean seguro = false;
+    private int casas = 0;
+    private boolean turnoAtivo = true;
     private final ArrayList<Propriedade> propriedades;
     private final ArrayList<Carta> cartas;
 
     public Jogador(String cor,
                    String nome,
-                   boolean carreira,
-                   boolean faculdade,
                    Profissao profissao,
-                   Profissao novaProfissao,
-                   boolean aposentadoria,
-                   int filhos,
-                   double salario,
-                   double patrimonio,
-                   boolean casamento,
-                   boolean seguro,
-                   int casas,
-                   int turno) {
+                   boolean faculdade
+                ) {
         this.cor = cor;
         this.nome = nome;
-        this.carreira = carreira;
-        this.faculdade = faculdade;
         this.profissao = profissao;
-        this.novaProfissao = novaProfissao;
-        this.aposentadoria = aposentadoria;
-        this.filhos = filhos;
-        this.salario = salario;
-        this.patrimonio = patrimonio;
-        this.casamento = casamento;
-        this.seguro = seguro;
-        this.casas = casas;
-        this.turno = turno;
-        this.turnoAtivo = true;
+        this.faculdade = faculdade;
+        this.salario = profissao.getSalario();
         this.propriedades = new ArrayList<>();
         this.cartas = new ArrayList<>();
-    }
-
-    public Jogador(String cor,
-                   String nome,
-                   boolean carreira,
-                   Profissao profissao,
-                   int filhos,
-                   double salario,
-                   double patrimonio,
-                   boolean casamento,
-                   boolean seguro,
-                   int casas) {
-        this(cor, nome, carreira, false, profissao, null, false, filhos, salario, patrimonio, casamento, seguro, casas, 0);
     }
 
     public String getCor() {
@@ -71,22 +36,6 @@ public class Jogador implements Movimentavel {
 
     public String getNome() {
         return nome;
-    }
-
-    public boolean getCarreira() {
-        return carreira;
-    }
-
-    public boolean getFaculdade() {
-        return faculdade;
-    }
-
-    public Profissao getProfissao() {
-        return profissao;
-    }
-
-    public Profissao getNovaProfissao() {
-        return novaProfissao;
     }
 
     public int getFilhos() {
@@ -101,11 +50,11 @@ public class Jogador implements Movimentavel {
         return patrimonio;
     }
 
-    public boolean getCasamento() {
+    public boolean isCasado() {
         return casamento;
     }
 
-    public boolean getSeguro() {
+    public boolean temSeguro() {
         return seguro;
     }
 
@@ -113,12 +62,20 @@ public class Jogador implements Movimentavel {
         return casas;
     }
 
-    public int getTurno() {
-        return turno;
-    }
-
     public boolean isTurnoAtivo() {
         return turnoAtivo;
+    }
+
+    public Profissao getProfissao() {
+        return profissao;
+    }
+
+    public boolean temFaculdade() {
+        return faculdade;
+    }
+
+    public boolean isAposentado() {
+        return aposentadoria;
     }
 
     public ArrayList<Propriedade> getPropriedades() {
@@ -129,44 +86,8 @@ public class Jogador implements Movimentavel {
         return cartas;
     }
 
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public void setCarreira(boolean carreira) {
-        this.carreira = carreira;
-    }
-
-    public void setFaculdade(boolean faculdade) {
-        this.faculdade = faculdade;
-    }
-
-    public void setProfissao(Profissao profissao) {
-        this.profissao = profissao;
-    }
-
-    public void setNovaProfissao(Profissao profissao) {
-        this.novaProfissao = profissao;
-    }
-
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
-
     public void setSeguro(boolean seguro) {
         this.seguro = seguro;
-    }
-
-    public void setCasas(int casas) {
-        this.casas = casas;
-    }
-
-    public void setTurno(int turno) {
-        this.turno = turno;
     }
 
     public void avancarCasas(int casas) {
@@ -183,18 +104,9 @@ public class Jogador implements Movimentavel {
         }
     }
 
-    public void TerFilho() {
-        this.filho = filho;
-    }
-
     public void escolherProfissao(Profissao profissao) {
         this.profissao = profissao;
-    }
-
-    public void trocarProfissao(Profissao novaProfissao) {
-        if (novaProfissao != null) {
-            this.profissao = novaProfissao;
-        }
+        this.salario = profissao.getSalario();
     }
 
     public void ganharDinheiro(double valor) {
@@ -206,15 +118,12 @@ public class Jogador implements Movimentavel {
     }
 
     public void transferirDinheiro(Jogador destino, double valor) {
-        if (destino == null) {
-            return;
-        }
         this.patrimonio -= valor;
         destino.patrimonio += valor;
     }
 
-    public void receberSalario(double salario) {
-        this.patrimonio += salario;
+    public void receberSalario() {
+        this.patrimonio += this.salario;
     }
 
     public void comprarPropriedade(Propriedade propriedade) {
@@ -246,8 +155,8 @@ public class Jogador implements Movimentavel {
         this.filhos += 1;
     }
 
-    public void fazer_aniversario(double presente) {
-        this.patrimonio += presente;
+    public void fazerAniversario(double valor) {
+        this.patrimonio += valor;
     }
 
     public void promocao(double novoSalario) {

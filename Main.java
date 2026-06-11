@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main {
 
     static ArrayList<Jogador> jogadores = new ArrayList<>();
-    static ArrayList<CasaEnum> tabuleiro = new ArrayList<>();
+    static ArrayList<Casa> tabuleiro = new ArrayList<>();
     static Roleta roleta = new Roleta();
     static Rodada rodada = new Rodada();
 
@@ -26,44 +26,44 @@ public class Main {
 
     // ordem correta: cor, tipo, evento, financeira, movimento, especial, instrucao, opcao1, opcao2, valor
     static void montarTabuleiro() {
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.INICIO,     null,                            null,                      null,                       null,                         "INICIO",                 null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Bonus +2000",            null, null, 2000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.AVANCAR, null,                         "Avance 2",               null, null, 2));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.CASAMENTO,       null,                      null,                       null,                         "Casamento!",             null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.PERDA, null,                       null,                         "Imposto -1500",          null, null, 1500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.VOLTAR,  null,                         "Volte 1",                null, null, 1));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.FILHO,           null,                      null,                       null,                         "Filho +1",               null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.SORTE,      "Sorte +3000",            null, null, 3000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Investimento +1000",     null, null, 1000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.PULAR_TURNO,"Pule o turno",           null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Aniversario +500",       null, null, 500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.PROMOCAO,        null,                      null,                       null,                         "Promocao sal.8000",      null, null, 8000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.PERDA, null,                       null,                         "Reforma -2500",          null, null, 2500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.ACIDENTE_CARRO,  null,                      null,                       null,                         "Acidente -3000",         null, null, 3000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.AVANCAR, null,                         "Atalho avance 3",        null, null, 3));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.AZAR,       "Azar -1000",             null, null, 1000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.FILHO,           null,                      null,                       null,                         "Gemeos filho +1",        null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Loteria +5000",          null, null, 5000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.VOLTAR,  null,                         "Carro quebrou volte 2",  null, null, 2));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.PERDA, null,                       null,                         "Multa -800",             null, null, 800));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.SORTE,      "Sorte +2000",            null, null, 2000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Festa +300",             null, null, 300));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.VOLTAR,  null,                         "Engarrafamento volte 1", null, null, 1));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Freelance +1500",        null, null, 1500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.PULAR_TURNO,"Viagem pule turno",      null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.FILHO,           null,                      null,                       null,                         "Mais um filho!",         null, null, 0));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.PERDA, null,                       null,                         "Dentista -600",          null, null, 600));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.AVANCAR, null,                         "Atalho avance 2",        null, null, 2));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.AZAR,       "Celular quebrou -1200",  null, null, 1200));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Dividendos +2500",       null, null, 2500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.PROMOCAO,        null,                      null,                       null,                         "Socio sal.12000",        null, null, 12000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.SORTE,      "Achou dinheiro +500",    null, null, 500));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.PERDA, null,                       null,                         "IPTU -1800",             null, null, 1800));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.MOVIMENTO,  null,                            null,                      CasaEnum.TipoMovimento.VOLTAR,  null,                         "Volte 3",                null, null, 3));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.FINANCEIRA, null,                            CasaEnum.TipoFinanceira.GANHO, null,                       null,                         "Bonus fim de ano +4000", null, null, 4000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.ESPECIAL,   null,                            null,                      null,                       CasaEnum.TipoEspecial.AZAR,       "Cano estourou -900",     null, null, 900));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Presente +1000",         null, null, 1000));
-        tabuleiro.add(new CasaEnum("", CasaEnum.TipoCasa.EVENTO,     CasaEnum.TipoEvento.APOSENTADORIA,   null,                      null,                       null,                         "APOSENTADORIA - FIM!",   null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.INICIO,     null,                            null,                      null,                       null,                         "INICIO",                 null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Bonus +2000",            null, null, 2000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.AVANCAR, null,                         "Avance 2",               null, null, 2));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.CASAMENTO,       null,                      null,                       null,                         "Casamento!",             null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.PERDA, null,                       null,                         "Imposto -1500",          null, null, 1500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.VOLTAR,  null,                         "Volte 1",                null, null, 1));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.FILHO,           null,                      null,                       null,                         "Filho +1",               null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.SORTE,      "Sorte +3000",            null, null, 3000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Investimento +1000",     null, null, 1000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.PULAR_TURNO,"Pule o turno",           null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Aniversario +500",       null, null, 500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.PROMOCAO,        null,                      null,                       null,                         "Promocao sal.8000",      null, null, 8000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.PERDA, null,                       null,                         "Reforma -2500",          null, null, 2500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.ACIDENTE_CARRO,  null,                      null,                       null,                         "Acidente -3000",         null, null, 3000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.AVANCAR, null,                         "Atalho avance 3",        null, null, 3));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.AZAR,       "Azar -1000",             null, null, 1000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.FILHO,           null,                      null,                       null,                         "Gemeos filho +1",        null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Loteria +5000",          null, null, 5000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.VOLTAR,  null,                         "Carro quebrou volte 2",  null, null, 2));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.PERDA, null,                       null,                         "Multa -800",             null, null, 800));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.SORTE,      "Sorte +2000",            null, null, 2000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Festa +300",             null, null, 300));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.VOLTAR,  null,                         "Engarrafamento volte 1", null, null, 1));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Freelance +1500",        null, null, 1500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.PULAR_TURNO,"Viagem pule turno",      null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.FILHO,           null,                      null,                       null,                         "Mais um filho!",         null, null, 0));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.PERDA, null,                       null,                         "Dentista -600",          null, null, 600));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.AVANCAR, null,                         "Atalho avance 2",        null, null, 2));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.AZAR,       "Celular quebrou -1200",  null, null, 1200));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Dividendos +2500",       null, null, 2500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.PROMOCAO,        null,                      null,                       null,                         "Socio sal.12000",        null, null, 12000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.SORTE,      "Achou dinheiro +500",    null, null, 500));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.PERDA, null,                       null,                         "IPTU -1800",             null, null, 1800));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.MOVIMENTO,  null,                            null,                      Casa.TipoMovimento.VOLTAR,  null,                         "Volte 3",                null, null, 3));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.FINANCEIRA, null,                            Casa.TipoFinanceira.GANHO, null,                       null,                         "Bonus fim de ano +4000", null, null, 4000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.ESPECIAL,   null,                            null,                      null,                       Casa.TipoEspecial.AZAR,       "Cano estourou -900",     null, null, 900));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.ANIVERSARIO,     null,                      null,                       null,                         "Presente +1000",         null, null, 1000));
+        tabuleiro.add(new Casa("", Casa.TipoCasa.EVENTO,     Casa.TipoEvento.APOSENTADORIA,   null,                      null,                       null,                         "APOSENTADORIA - FIM!",   null, null, 0));
     }
 
     static void criarJanela() {
@@ -116,7 +116,7 @@ public class Main {
         int cH = (painelTabuleiro.getHeight() - 10) / rows;
 
         for (int i = 0; i < tabuleiro.size(); i++) {
-            CasaEnum casa = tabuleiro.get(i);
+            Casa casa = tabuleiro.get(i);
             int row = i / cols;
             int col = (row % 2 == 0) ? (i % cols) : (cols - 1 - (i % cols));
             int x = 5 + col * cW;
@@ -166,21 +166,21 @@ public class Main {
         }
     }
 
-    static Color corDaCasa(CasaEnum c) {
-        if (c.getTipo() == CasaEnum.TipoCasa.INICIO) return new Color(255, 215, 0);
-        if (c.getTipo() == CasaEnum.TipoCasa.FINANCEIRA) {
-            if (c.getFinanceira() == CasaEnum.TipoFinanceira.GANHO) return new Color(180, 230, 180);
+    static Color corDaCasa(Casa c) {
+        if (c.getTipo() == Casa.TipoCasa.INICIO) return new Color(255, 215, 0);
+        if (c.getTipo() == Casa.TipoCasa.FINANCEIRA) {
+            if (c.getFinanceira() == Casa.TipoFinanceira.GANHO) return new Color(180, 230, 180);
             else return new Color(230, 180, 180);
         }
-        if (c.getTipo() == CasaEnum.TipoCasa.MOVIMENTO) {
-            if (c.getMovimento() == CasaEnum.TipoMovimento.AVANCAR) return new Color(180, 210, 240);
+        if (c.getTipo() == Casa.TipoCasa.MOVIMENTO) {
+            if (c.getMovimento() == Casa.TipoMovimento.AVANCAR) return new Color(180, 210, 240);
             else return new Color(240, 200, 150);
         }
-        if (c.getTipo() == CasaEnum.TipoCasa.EVENTO)   return new Color(255, 240, 150);
-        if (c.getTipo() == CasaEnum.TipoCasa.ESPECIAL) {
-            if (c.getEspecial() == CasaEnum.TipoEspecial.SORTE)       return new Color(180, 230, 180);
-            if (c.getEspecial() == CasaEnum.TipoEspecial.AZAR)        return new Color(230, 180, 180);
-            if (c.getEspecial() == CasaEnum.TipoEspecial.PULAR_TURNO) return new Color(210, 210, 210);
+        if (c.getTipo() == Casa.TipoCasa.EVENTO)   return new Color(255, 240, 150);
+        if (c.getTipo() == Casa.TipoCasa.ESPECIAL) {
+            if (c.getEspecial() == Casa.TipoEspecial.SORTE)       return new Color(180, 230, 180);
+            if (c.getEspecial() == Casa.TipoEspecial.AZAR)        return new Color(230, 180, 180);
+            if (c.getEspecial() == Casa.TipoEspecial.PULAR_TURNO) return new Color(210, 210, 210);
         }
         return Color.LIGHT_GRAY;
     }
@@ -192,7 +192,7 @@ public class Main {
         int novaCasa = Math.min(atual.getCasas() + dado, tabuleiro.size() - 1);
         atual.setCasas(novaCasa);
 
-        CasaEnum casa = tabuleiro.get(novaCasa);
+        Casa casa = tabuleiro.get(novaCasa);
         casa.aplicar(atual);
 
         JOptionPane.showMessageDialog(null,
