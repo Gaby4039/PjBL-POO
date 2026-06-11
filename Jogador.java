@@ -153,20 +153,8 @@ public class Jogador implements Movimentavel {
         this.novaProfissao = profissao;
     }
 
-    public void setFilhos(int filhos) {
-        this.filhos = filhos;
-    }
-
     public void setSalario(double salario) {
         this.salario = salario;
-    }
-
-    public void setPatrimonio(double patrimonio) {
-        this.patrimonio = patrimonio;
-    }
-
-    public void setCasamento(boolean casamento) {
-        this.casamento = casamento;
     }
 
     public void setSeguro(boolean seguro) {
@@ -181,10 +169,6 @@ public class Jogador implements Movimentavel {
         this.turno = turno;
     }
 
-    public void setTurno(boolean turnoAtivo) {
-        this.turnoAtivo = turnoAtivo;
-    }
-
     public void avancarCasas(int casas) {
         this.casas += casas;
         if (this.casas < 0) {
@@ -197,6 +181,10 @@ public class Jogador implements Movimentavel {
         if (this.casas < 0) {
             this.casas = 0;
         }
+    }
+
+    public void TerFilho() {
+        this.filho = filho;
     }
 
     public void escolherProfissao(Profissao profissao) {

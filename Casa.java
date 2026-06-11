@@ -1,14 +1,49 @@
-public class Casa implements Efeito {
+public abstract class Casa implements Efeito {
+    private String instrucao;
 
-    public enum TipoCasa {
-        FINANCEIRA,
-        EVENTO,
-        MOVIMENTO,
-        ESCOLHA,
-        ESPECIAL,
-        INICIO
+    public Casa(String instrucao) {
+        this.instrucao = instrucao;
     }
 
+    public String getInstrucao() {
+        return instrucao;
+    }
+}
+
+class CasaFinanceira extends Casa {
+    public enum TipoFinanceira {
+        GANHO,
+        PERDA
+    }
+
+    private double valor;
+    private TipoFinanceira tipoFinanceira;
+
+    public CasaFinanceira(String instrucao, double valor, TipoFinanceira tipoFinanceira) {
+        super(instrucao);
+        this.valor = valor;
+        this.tipoFinanceira = tipoFinanceira;
+    }
+
+    public TipoFinanceira getTipoFinanceira() {
+        return tipoFinanceira;
+    }
+
+    @Override
+    public void aplicar(Jogador jogador) {
+        switch (getTipoFinanceira()) {
+            case GANHO:
+                jogador.ganharDinheiro(valor);
+                break;
+
+            case PERDA:
+                jogador.perderDinheiro(valor);
+                break;
+        }
+    }
+}
+
+class CasaEvento extends Casa {
     public enum TipoEvento {
         CASAMENTO,
         FILHO,
@@ -19,16 +54,105 @@ public class Casa implements Efeito {
         APOSENTADORIA
     }
 
-    public enum TipoFinanceira {
-        GANHO,
-        PERDA
+    private TipoEvento tipoEvento;
+    private double valor;
+    private Profissao novaProfissao;
+
+    public CasaEvento(String instrucao, TipoEvento tipoEvento, double valor, Profissao novaProfissao) {
+        super(instrucao);
+        this.tipoEvento = tipoEvento;
+        this.valor = valor;
+        this.novaProfissao = novaProfissao;
     }
 
+    public TipoEvento getTipoEvento() {
+        return tipoEvento;
+    }
+
+    public double getValor() {
+        return valor;
+    }
+
+    public Profissao getNovaProfissao() {
+        return novaProfissao;
+    }
+
+    @Override
+    public void aplicar(Jogador jogador) {
+        switch (tipoEvento) {
+            case CASAMENTO:
+                jogador.setCasamento(true);
+                break;
+
+            case FILHO:
+                jogador.setFilhos(1);
+                break;
+
+            case ANIVERSARIO:
+                jogador.fazer_aniversario(valor);
+                break;
+
+            case PROMOCAO:
+                jogador.setSalario(valor);
+                break;
+
+            case ACIDENTE_CARRO:
+                if (jogador.getSeguro()) {
+                    jogador.ganharDinheiro(valor);
+                } else {
+                    jogador.perderDinheiro(valor);
+                }
+                break;
+
+            case TROCAR_PROFISSAO:
+                jogador.trocarProfissao(novaProfissao);
+                break;
+
+            case APOSENTADORIA:
+                jogador.aposentar();
+                break;
+        }
+    }
+}
+
+class CasaMovimento extends Casa {
     public enum TipoMovimento {
         AVANCAR,
         VOLTAR
     }
 
+    private int casas;
+    private TipoMovimento tipoMovimento;
+
+    public CasaMovimento(String instrucao, TipoMovimento tipomovimento, int casas) {
+        super(instrucao);
+        this.casas = casas;
+        this.tipoMovimento = tipomovimento;
+    }
+
+    public int getCasas() {
+        return casas;
+    }
+
+    public TipoMovimento getTipoMovimento() {
+        return tipoMovimento;
+    }
+
+    @Override
+    public void aplicar(Jogador jogador) {
+        switch (tipoMovimento) {
+            case AVANCAR:
+                jogador.avancarCasas(casas);
+                break;
+
+            case VOLTAR:
+                jogador.voltarCasas(casas);
+                break;
+        }
+    }
+}
+
+class CasaEspecial extends Casa {
     public enum TipoEspecial {
         SORTE,
         AZAR,
@@ -36,153 +160,41 @@ public class Casa implements Efeito {
         JOGAR_NOVAMENTE
     }
 
-    private String cor;
-    private TipoCasa tipo;
-    private TipoEvento evento;
-    private TipoFinanceira financeira;
-    private TipoMovimento movimento;
-    private TipoEspecial especial;
-    private String instrucao;
-    private String opcao1;
-    private String opcao2;
-    private int valor;
+    private double valor;
+    private TipoEspecial tipoEspecial;
 
-    public Casa(String cor,
-                TipoCasa tipo,
-                TipoEvento evento,
-                TipoFinanceira financeira,
-                TipoMovimento movimento,
-                TipoEspecial especial,
-                String instrucao,
-                String opcao1,
-                String opcao2,
-                int valor) {
-        this.cor = cor;
-        this.tipo = tipo;
-        this.evento = evento;
-        this.financeira = financeira;
-        this.movimento = movimento;
-        this.especial = especial;
-        this.opcao1 = opcao1;
-        this.opcao2 = opcao2;
-        this.instrucao = instrucao;
+    public CasaEspecial(String instrucao, double valor, TipoEspecial tipoEspecial) {
+        super(instrucao);
         this.valor = valor;
+        this.tipoEspecial = tipoEspecial;
     }
 
-    public String getCor() {
-        return cor;
-    }
-
-    public TipoCasa getTipo() {
-        return tipo;
-    }
-
-    public TipoEvento getEvento() {
-        return evento;
-    }
-
-    public TipoFinanceira getFinanceira() {
-        return financeira;
-    }
-
-    public TipoMovimento getMovimento() {
-        return movimento;
-    }
-
-    public TipoEspecial getEspecial() {
-        return especial;
-    }
-
-    public String getInstrucao() {
-        return instrucao;
-    }
-
-    public String getOpcao1() {
-        return opcao1;
-    }
-
-    public String getOpcao2() {
-        return opcao2;
-    }
-
-    public int getValor() {
+    public double getValor() {
         return valor;
     }
 
-    public void aplicar(Jogador jogador) {
-        if (jogador == null) {
-            return;
-        }
-
-        switch (tipo) {
-            case FINANCEIRA:
-                if (financeira == TipoFinanceira.GANHO) {
-                    jogador.ganharDinheiro(valor);
-                } else if (financeira == TipoFinanceira.PERDA) {
-                    jogador.perderDinheiro(valor);
-                }
-                break;
-            case EVENTO:
-                if (evento == TipoEvento.CASAMENTO) {
-                    jogador.casar();
-                } else if (evento == TipoEvento.FILHO) {
-                    jogador.terFilho();
-                } else if (evento == TipoEvento.ANIVERSARIO) {
-                    jogador.fazer_aniversario(valor);
-                } else if (evento == TipoEvento.PROMOCAO) {
-                    jogador.promocao(valor);
-                } else if (evento == TipoEvento.ACIDENTE_CARRO) {
-                    if (jogador.getSeguro()) {
-                        jogador.ganharDinheiro(valor / 2);
-                    } else {
-                        jogador.perderDinheiro(valor);
-                    }
-                } else if (evento == TipoEvento.TROCAR_PROFISSAO) {
-                    if (jogador.getNovaProfissao() != null) {
-                        jogador.trocarProfissao(jogador.getNovaProfissao());
-                    }
-                } else if (evento == TipoEvento.APOSENTADORIA) {
-                    jogador.aposentar();
-                }
-                break;
-            case MOVIMENTO:
-                if (movimento == TipoMovimento.AVANCAR) {
-                    jogador.avancarCasas(valor);
-                } else if (movimento == TipoMovimento.VOLTAR) {
-                    jogador.voltarCasas(valor);
-                }
-                break;
-            case ESCOLHA:
-                System.out.println(instrucao);
-                System.out.println("1 - " + opcao1);
-                System.out.println("2 - " + opcao2);
-                break;
-            case ESPECIAL:
-                if (especial == TipoEspecial.SORTE) {
-                    jogador.ganharDinheiro(valor);
-                } else if (especial == TipoEspecial.AZAR) {
-                    jogador.perderDinheiro(valor);
-                } else if (especial == TipoEspecial.PULAR_TURNO) {
-                    jogador.pularTurno();
-                } else if (especial == TipoEspecial.JOGAR_NOVAMENTE) {
-                    jogador.jogarNovamente();
-                }
-                break;
-            case INICIO:
-                break;
-        }
-    }
-
-    public void efeito(Jogador jogador) {
-        aplicar(jogador);
+    public TipoEspecial getTipoEspecial() {
+        return tipoEspecial;
     }
 
     @Override
-    public String toString() {
-        String descricao = tipo + ": " + (instrucao != null ? instrucao : "Casa sem descrição");
-        if (valor != 0) {
-            descricao += " (Valor: " + valor + ")";
+    public void aplicar(Jogador jogador) {
+        switch (tipoEspecial) {
+            case SORTE:
+                jogador.ganharDinheiro(valor);
+                break;
+
+            case AZAR:
+                jogador.perderDinheiro(valor);
+                break;
+
+            case PULAR_TURNO:
+                jogador.pularTurno();
+                break;
+
+            case JOGAR_NOVAMENTE:
+                jogador.jogarNovamente();
+                break;
         }
-        return descricao;
     }
 }

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Tabuleiro {
-    private ArrayList<Casa> casas;
+    private ArrayList<CasaEnum> casas;
     private int quantidadeCasas;
 
     public Tabuleiro(int quantidadeCasas) {
@@ -9,7 +9,7 @@ public class Tabuleiro {
         this.casas = new ArrayList<>(quantidadeCasas);
     }
 
-    public ArrayList<Casa> getCasas() {
+    public ArrayList<CasaEnum> getCasas() {
         return casas;
     }
 
@@ -17,7 +17,7 @@ public class Tabuleiro {
         return quantidadeCasas;
     }
 
-    public void setCasas(Casa casa) {
+    public void setCasas(CasaEnum casa) {
         if (casa == null) {
             return;
         }
@@ -30,7 +30,7 @@ public class Tabuleiro {
         }
     }
 
-    public Casa getCasa(int indice) {
+    public CasaEnum getCasa(int indice) {
         if (indice < 0 || indice >= casas.size()) {
             return null;
         }
