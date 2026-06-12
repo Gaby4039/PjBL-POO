@@ -1,6 +1,7 @@
 import java.util.Random;
+import java.io.Serializable;
 
-public class Roleta {
+public class Roleta implements Serializable {
     private Random alea;
 
     public Roleta() {

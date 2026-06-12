@@ -1,7 +1,4 @@
-import java.io.Serializable;
-
-public abstract class Carta implements Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class Carta {
 
     protected String descricao;
     protected double valor;

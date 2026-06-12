@@ -1,4 +1,6 @@
-public class Banco{
+import java.io.Serializable;
+
+public class Banco implements Serializable {
     private double saldoBanco;
 
     public Banco (){

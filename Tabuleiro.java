@@ -3,10 +3,9 @@ import java.io.Serializable;
 
 public class Tabuleiro implements Serializable {
     private ArrayList<Casa> casas;
-    private int quantidadeCasas;
+    private int quantidadeCasas = 40;
 
-    public Tabuleiro(int quantidadeCasas) {
-        this.quantidadeCasas = quantidadeCasas;
+    public Tabuleiro() {
         this.casas = new ArrayList<>(quantidadeCasas);
     }
 
@@ -39,10 +38,6 @@ public class Tabuleiro implements Serializable {
     }
 
     public void montarTabuleiro() {
-
-        this.quantidadeCasas = 40;
-        this.casas.clear();
-
         setCasas(new CasaVazia("Início: escolha seu caminho"));
         setCasas(new CasaEvento("Escolha sua carreira", CasaEvento.TipoEvento.CARREIRA));
         setCasas(new CasaFinanceira("Recebe salário", 5000.0, CasaFinanceira.TipoFinanceira.GANHO));

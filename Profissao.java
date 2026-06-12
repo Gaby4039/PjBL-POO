@@ -1,7 +1,8 @@
 import java.util.Map;
 import java.util.HashMap;
+import java.io.Serializable;
 
-public class Profissao {
+public class Profissao implements Serializable {
 
     private String nome;
     private double salario;

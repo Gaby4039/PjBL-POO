@@ -3,22 +3,22 @@ import java.util.ArrayList;
 
 public class Jogo implements Serializable {
     private ArrayList<Jogador> jogadores;
-    private ArrayList<Casa> tabuleiro;
+    private Tabuleiro tabuleiro;
     private Rodada rodada;
 
     public Jogo(ArrayList<Jogador> jogadores,
-                ArrayList<Casa> tabuleiro,
+                Tabuleiro tabuleiro,
                 Rodada rodada) {
-        jogadores = new ArrayList<>();
-        tabuleiro = new ArrayList<>();
-        rodada = new Rodada();
+       this.jogadores = jogadores;
+       this.tabuleiro = tabuleiro;
+       this.rodada = rodada;
     }
 
     public ArrayList<Jogador> getJogadores() {
         return jogadores;
     }
 
-    public ArrayList<Casa> getTabuleiro() {
+    public Tabuleiro getTabuleiro() {
         return tabuleiro;
     }
 
