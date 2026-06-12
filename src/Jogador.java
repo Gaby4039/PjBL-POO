@@ -91,6 +91,14 @@ public class Jogador implements Movimentavel, Serializable {
         this.seguro = seguro;
     }
 
+    public void setCasas(int casas) {
+        this.casas = casas;
+        if (this.casas < 0) {
+            this.casas = 0;
+        }
+    }
+
+
     public void avancarCasas(int casas) {
         this.casas += casas;
         if (this.casas < 0) {

@@ -1,4 +1,6 @@
-public abstract class Carta {
+import java.io.Serializable;
+
+public abstract class Carta implements Serializable {
 
     protected String descricao;
     protected double valor;

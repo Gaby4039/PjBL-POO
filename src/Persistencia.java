@@ -4,7 +4,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 
 public class Persistencia {
-    public void salvar(Jogo jogo, String arquivo) throws Exception { //Temporariamente lançando exceção até implementar try catch
+    public void salvar(Jogo jogo, String arquivo) throws Exception {
         FileOutputStream fos = new FileOutputStream(arquivo);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
@@ -14,8 +14,7 @@ public class Persistencia {
         fos.close();
     }
 
-    public Jogo carregar(String arquivo) throws Exception { //Temporariamente lançando exceção até implementar try catch
-        FileOutputStream fos = new FileOutputStream(arquivo);
+    public Jogo carregar(String arquivo) throws Exception {
         FileInputStream fis = new FileInputStream(arquivo);
         ObjectInputStream ois = new ObjectInputStream(fis);
 

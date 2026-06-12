@@ -9,9 +9,9 @@ public class Jogo implements Serializable {
     public Jogo(ArrayList<Jogador> jogadores,
                 ArrayList<Casa> tabuleiro,
                 Rodada rodada) {
-        jogadores = new ArrayList<>();
-        tabuleiro = new ArrayList<>();
-        rodada = new Rodada();
+        this.jogadores = jogadores;
+        this.tabuleiro = tabuleiro;
+        this.rodada = rodada;
     }
 
     public ArrayList<Jogador> getJogadores() {

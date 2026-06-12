@@ -35,11 +35,11 @@ class CasaFinanceira extends Casa {
     public void aplicar(Jogador jogador) {
         switch (getTipoFinanceira()) {
             case GANHO:
-                jogador.ganharDinheiro(valor);
+                Main.banco.pagar(jogador, valor);
                 break;
 
             case PERDA:
-                jogador.perderDinheiro(valor);
+                Main.banco.cobrar(jogador, valor);
                 break;
         }
     }
@@ -100,9 +100,9 @@ class CasaEvento extends Casa {
 
             case ACIDENTE_CARRO:
                 if (jogador.temSeguro()) {
-                    jogador.ganharDinheiro(valor);
+                    Main.banco.pagar(jogador, valor);
                 } else {
-                    jogador.perderDinheiro(valor);
+                    Main.banco.cobrar(jogador, valor);
                 }
                 break;
 
@@ -183,11 +183,11 @@ class CasaEspecial extends Casa {
     public void aplicar(Jogador jogador) {
         switch (tipoEspecial) {
             case SORTE:
-                jogador.ganharDinheiro(valor);
+                Main.banco.pagar(jogador, valor);
                 break;
 
             case AZAR:
-                jogador.perderDinheiro(valor);
+                Main.banco.cobrar(jogador, valor);
                 break;
 
             case PULAR_TURNO:

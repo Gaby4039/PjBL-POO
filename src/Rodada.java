@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Rodada {
+public class Rodada implements Serializable {
     private int numeroRodada;
     private int jogadorAtual;
 
