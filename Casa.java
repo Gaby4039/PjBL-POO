@@ -47,6 +47,7 @@ class CasaFinanceira extends Casa {
 
 class CasaEvento extends Casa {
     public enum TipoEvento {
+        CARREIRA,
         CASAMENTO,
         FILHO,
         ANIVERSARIO,
@@ -60,11 +61,24 @@ class CasaEvento extends Casa {
     private double valor;
     private Profissao novaProfissao;
 
-    public CasaEvento(String instrucao, TipoEvento tipoEvento, double valor, Profissao novaProfissao) {
+    public CasaEvento(String instrucao, TipoEvento tipoEvento, Profissao novaProfissao) {
+        super(instrucao);
+        this.tipoEvento = tipoEvento;
+        this.novaProfissao = novaProfissao;
+    }
+
+    //Sobrecarga de construtor
+    public CasaEvento(String instrucao, TipoEvento tipoEvento, double valor) {
         super(instrucao);
         this.tipoEvento = tipoEvento;
         this.valor = valor;
-        this.novaProfissao = novaProfissao;
+    }
+
+    //Sobrecarga de construtor
+    public CasaEvento(String instrucao, TipoEvento tipoEvento) {
+        super(instrucao);
+        this.tipoEvento = tipoEvento;
+
     }
 
     public TipoEvento getTipoEvento() {
@@ -82,6 +96,8 @@ class CasaEvento extends Casa {
     @Override
     public void aplicar(Jogador jogador) {
         switch (tipoEvento) {
+            case CARREIRA:
+                break;
             case CASAMENTO:
                 jogador.casar();
                 break;

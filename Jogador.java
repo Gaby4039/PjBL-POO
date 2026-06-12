@@ -19,13 +19,9 @@ public class Jogador implements Movimentavel, Serializable {
 
     public Jogador(String cor,
                    String nome,
-                   Profissao profissao,
-                   boolean faculdade
                 ) {
         this.cor = cor;
         this.nome = nome;
-        this.profissao = profissao;
-        this.faculdade = faculdade;
         this.salario = profissao.getSalario();
         this.propriedades = new ArrayList<>();
         this.cartas = new ArrayList<>();
@@ -122,7 +118,7 @@ public class Jogador implements Movimentavel, Serializable {
         if(destino == null) {
             return;
         }
-        
+
         perderDinheiro(valor);
         destino.ganharDinheiro(valor);
     }
