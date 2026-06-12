@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
 public class Tabuleiro {
     private ArrayList<Casa> casas;

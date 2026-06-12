@@ -1,4 +1,6 @@
-public abstract class Casa implements Efeito {
+import java.io.Serializable;
+
+public abstract class Casa implements Efeito, Serializable {
     private String instrucao;
 
     public Casa(String instrucao) {
@@ -81,23 +83,23 @@ class CasaEvento extends Casa {
     public void aplicar(Jogador jogador) {
         switch (tipoEvento) {
             case CASAMENTO:
-                jogador.setCasamento(true);
+                jogador.casar();
                 break;
 
             case FILHO:
-                jogador.setFilhos(1);
+                jogador.terFilho();
                 break;
 
             case ANIVERSARIO:
-                jogador.fazer_aniversario(valor);
+                jogador.fazerAniversario(valor);
                 break;
 
             case PROMOCAO:
-                jogador.setSalario(valor);
+                jogador.promocao(valor);
                 break;
 
             case ACIDENTE_CARRO:
-                if (jogador.getSeguro()) {
+                if (jogador.temSeguro()) {
                     jogador.ganharDinheiro(valor);
                 } else {
                     jogador.perderDinheiro(valor);
@@ -105,7 +107,7 @@ class CasaEvento extends Casa {
                 break;
 
             case TROCAR_PROFISSAO:
-                jogador.trocarProfissao(novaProfissao);
+                jogador.escolherProfissao(novaProfissao);
                 break;
 
             case APOSENTADORIA:
@@ -197,4 +199,13 @@ class CasaEspecial extends Casa {
                 break;
         }
     }
+}
+
+class CasaVazia extends Casa {
+    public CasaVazia(String instrucao) {
+        super(instrucao);
+    }
+
+    @Override
+    public void aplicar(Jogador jogador) {}
 }

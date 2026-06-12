@@ -1,7 +1,8 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.io.Serializable;
 
-public class Propriedade {
+public class Propriedade implements Serializable {
     private String nome;
     private Double valorCompra;
     private String tipoImovel;

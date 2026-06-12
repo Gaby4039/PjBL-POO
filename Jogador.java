@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Jogador implements Movimentavel {
+public class Jogador implements Movimentavel, Serializable {
     private String cor;
     private String nome;
     private Profissao profissao;
@@ -118,8 +119,12 @@ public class Jogador implements Movimentavel {
     }
 
     public void transferirDinheiro(Jogador destino, double valor) {
-        this.patrimonio -= valor;
-        destino.patrimonio += valor;
+        if(destino == null) {
+            return;
+        }
+        
+        perderDinheiro(valor);
+        destino.ganharDinheiro(valor);
     }
 
     public void receberSalario() {
@@ -130,7 +135,7 @@ public class Jogador implements Movimentavel {
         if (propriedade == null) {
             return;
         }
-        this.patrimonio -= propriedade.getValorCompra();
+        perderDinheiro(propriedade.getValorCompra());
         this.propriedades.add(propriedade);
     }
 
@@ -139,7 +144,7 @@ public class Jogador implements Movimentavel {
             return;
         }
         if (this.propriedades.remove(propriedade)) {
-            this.patrimonio += propriedade.getValorCompra();
+            ganharDinheiro(propriedade.getValorCompra());
         }
     }
 
