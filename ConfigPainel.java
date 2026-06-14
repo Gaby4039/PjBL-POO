@@ -5,8 +5,10 @@ public class ConfigPainel extends JPanel {
     private JTextField[] camposNome;
     private JLabel[] labelsNome;
     private JComboBox<String> comboQtd;
+    private final Image fundoConfig;
 
     public ConfigPainel() {
+        fundoConfig = new ImageIcon("config_background.png").getImage();
         setLayout(new GridBagLayout());
         setBackground(new Color(240, 248, 255));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -14,7 +16,8 @@ public class ConfigPainel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lblTitulo = new JLabel("Configuração de Jogadores");
-        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 24));
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 25));
+        lblTitulo.setForeground(Color.BLACK);
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         add(lblTitulo, gbc);
 
@@ -58,6 +61,11 @@ public class ConfigPainel extends JPanel {
 
         JButton btnIniciar = new JButton("Iniciar Partida!");
         btnIniciar.setFont(new Font("SansSerif", Font.BOLD, 16));
+        btnIniciar.setBackground(new Color(200, 20, 20));
+        btnIniciar.setForeground(Color.WHITE);
+        btnIniciar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(140, 0, 0), 3),
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)));
         btnIniciar.addActionListener(e -> {
             int qtd = comboQtd.getSelectedIndex() + 2;
             Main.jogadores.clear();
@@ -77,8 +85,21 @@ public class ConfigPainel extends JPanel {
         add(btnIniciar, gbc);
 
         JButton btnVoltar = new JButton("Voltar ao Menu");
+        btnVoltar.setBackground(new Color(0, 119, 255));
+        btnVoltar.setForeground(Color.WHITE);
+        btnVoltar.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btnVoltar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(0, 29, 220), 4),
+                BorderFactory.createEmptyBorder(12, 30, 12, 30)));
+
         btnVoltar.addActionListener(e -> Main.mostrarMenuInicial());
         gbc.gridy = 7;
         add(btnVoltar, gbc);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(fundoConfig, 0, 0, getWidth(), getHeight(), this);
     }
 }

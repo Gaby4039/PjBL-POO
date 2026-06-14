@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -13,6 +16,10 @@ public class Main {
     public static JFrame janela;
     public static JLabel labelStatus;
     public static JogoPainel jogoPainel;
+    private static final String[] IMG_NAMES = {"redCar.png", "blueCar.png", "greenCar.png", "pinkCar.png"};
+    private static final int PLAYER_IMG_W = 16;
+    private static final int PLAYER_IMG_H = 16;
+    public static BufferedImage[] jogadorImgs = new BufferedImage[IMG_NAMES.length];
 
     public static void main(String[] args) {
         janela = new JFrame("Jogo da Vida");
@@ -37,10 +44,30 @@ public class Main {
     }
 
     public static void criarJanelaJogo() {
+        carregarImagensJogadores();
         jogoPainel = new JogoPainel();
         janela.setContentPane(jogoPainel);
         janela.revalidate();
         janela.repaint();
+    }
+
+    private static void carregarImagensJogadores() {
+        for (int i = 0; i < IMG_NAMES.length; i++) {
+            jogadorImgs[i] = carregarImagem(IMG_NAMES[i]);
+        }
+    }
+
+    private static BufferedImage carregarImagem(String nome) {
+        try {
+            File f = new File(nome);
+            if (f.exists()) return ImageIO.read(f);
+        } catch (Exception ignored) {}
+        try {
+            if (Main.class.getResourceAsStream("/" + nome) != null) {
+                return ImageIO.read(Main.class.getResourceAsStream("/" + nome));
+            }
+        } catch (Exception ignored) {}
+        return null;
     }
 
     public static void montarTabuleiro() {
@@ -98,12 +125,19 @@ public class Main {
             int px = x + 3;
             for (int j = 0; j < jogadores.size(); j++) {
                 if (jogadores.get(j).getCasas() == i) {
-                    g.setColor(coresJog[j % coresJog.length]);
-                    g.fillOval(px, y + cH - 15, 11, 11);
-                    g.setColor(Color.WHITE);
-                    g.setFont(new Font("SansSerif", Font.BOLD, 7));
-                    g.drawString(jogadores.get(j).getNome().substring(0, 1), px + 3, y + cH - 6);
-                    px += 13;
+                    BufferedImage img = jogadorImgs[j % jogadorImgs.length];
+                    int drawX = px;
+                    int drawY = y + cH - PLAYER_IMG_H - 2;
+                    if (img != null) {
+                        g.drawImage(img, drawX, drawY, PLAYER_IMG_W, PLAYER_IMG_H, null);
+                    } else {
+                        g.setColor(coresJog[j % coresJog.length]);
+                        g.fillOval(drawX, drawY, PLAYER_IMG_W, PLAYER_IMG_H);
+                        g.setColor(Color.WHITE);
+                        g.setFont(new Font("SansSerif", Font.BOLD, 8));
+                        g.drawString(jogadores.get(j).getNome().substring(0, 1), drawX + 5, drawY + PLAYER_IMG_H - 4);
+                    }
+                    px += PLAYER_IMG_W + 2;
                 }
             }
         }
