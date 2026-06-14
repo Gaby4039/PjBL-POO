@@ -17,9 +17,10 @@ public class Main {
     public static JLabel labelStatus;
     public static JogoPainel jogoPainel;
     private static final String[] IMG_NAMES = {"redCar.png", "blueCar.png", "greenCar.png", "pinkCar.png"};
-    private static final int PLAYER_IMG_W = 16;
-    private static final int PLAYER_IMG_H = 16;
+    private static final int PLAYER_IMG_W = 32;
+    private static final int PLAYER_IMG_H = 32;
     public static BufferedImage[] jogadorImgs = new BufferedImage[IMG_NAMES.length];
+    private static BufferedImage fundoTabuleiro;
 
     public static void main(String[] args) {
         janela = new JFrame("Jogo da Vida");
@@ -45,6 +46,9 @@ public class Main {
 
     public static void criarJanelaJogo() {
         carregarImagensJogadores();
+
+        fundoTabuleiro = carregarImagem("backgroundJogo2.png");
+
         jogoPainel = new JogoPainel();
         janela.setContentPane(jogoPainel);
         janela.revalidate();
@@ -70,125 +74,250 @@ public class Main {
         return null;
     }
 
+    private static final int ANIMACAO_DELAY_MS = 250;
+    private static boolean animando = false;
+
     public static void montarTabuleiro() {
         tabuleiro = new Tabuleiro();
         tabuleiro.montarTabuleiro();
     }
 
+    private static void moverJogadorPassoAPasso(Jogador jogador, int destino, Runnable aoFinalizar) {
+        if (jogador.getCasas() == destino) {
+            if (aoFinalizar != null) aoFinalizar.run();
+            return;
+        }
+
+        animando = true;
+        int passo = destino > jogador.getCasas() ? 1 : -1;
+        Timer timer = new Timer(ANIMACAO_DELAY_MS, null);
+        timer.addActionListener(e -> {
+            int casaAtual = jogador.getCasas();
+            if (casaAtual == destino) {
+                timer.stop();
+                animando = false;
+                if (aoFinalizar != null) aoFinalizar.run();
+                return;
+            }
+
+            jogador.setCasas(casaAtual + passo);
+            if (jogoPainel != null) jogoPainel.repintarTabuleiro();
+        });
+        timer.setInitialDelay(0);
+        timer.start();
+    }
+
     public static void desenharTabuleiro(Graphics g, int larguraPainel, int alturaPainel) {
         if (tabuleiro == null || tabuleiro.getCasas().isEmpty()) return;
-        int cols = 10;
-        int rows = (int) Math.ceil((double) tabuleiro.getCasas().size() / cols);
-        int cW = (larguraPainel  - 10) / cols;
-        int cH = (alturaPainel - 10) / rows;
 
-        for (int i = 0; i < tabuleiro.getCasas().size(); i++) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if (fundoTabuleiro != null) {
+            g2.drawImage(
+                fundoTabuleiro,
+                0,
+                0,
+                larguraPainel,
+                alturaPainel,
+                null
+            );
+        }
+
+        int total = tabuleiro.getCasas().size();
+        int cols = 12;
+        int rows = 7;
+        int margin = 12;
+        int tamanhoCasa = Math.min((larguraPainel - margin * 2) / cols, (alturaPainel - margin * 2) / rows) + 5;
+
+        int offsetX = 2;
+        int offsetY = 2;
+
+        Font numeroFonte = new Font("SansSerif", Font.BOLD, 14);
+        Font textoFonte = new Font("SansSerif", Font.BOLD, 12);
+
+        for (int i = 0; i < total; i++) {
             Casa casa = tabuleiro.getCasa(i);
-            int row = i / cols;
-                int col = (row % 2 == 0) ? (i % cols) : (cols - 1 - (i % cols));
-            int x = 5 + col * cW;
-            int y = 5 + row * cH;
+            int row;
+            int col;
+            if (i < 12) {
+                row = 0;
+                col = i;
+            }
+            else if (i == 12) {
+                row = 1;
+                col = 11;
+            }
+            else if (i == 13) {
+                row = 2;
+                col = 11;
+            }
+            else if (i < 25) {
+                row = 2;
+                col = 24 - i;
+            }
+            else if (i == 25) {
+                row = 3;
+                col = 0;
+            }
+            else if (i == 26) {
+                row = 4;
+                col = 0;
+            }
+            else if (i < 39) {
+                row = 4;
+                col = i - 27;
+            }
+            else if (i == 39) {
+                row = 5;
+                col = 11;
+            }
 
-            g.setColor(corDaCasa(casa));
-            g.fillRect(x, y, cW - 1, cH - 1);
-            g.setColor(Color.DARK_GRAY);
-            g.drawRect(x, y, cW - 1, cH - 1);
+            else if (i == 40) {
+                row = 6;
+                col = 11;
+            }
 
-            g.setColor(Color.BLACK);
-            g.setFont(new Font("SansSerif", Font.BOLD, 10));
-            g.drawString(String.valueOf(i + 1), x + 2, y + 12);
+            else {
+                row = 6;
+                col = 51 - i;
+            }
+
+            int x = offsetX + col * (tamanhoCasa + 2);
+            int y = offsetY + row * (tamanhoCasa + 12);
+            int w = tamanhoCasa;
+            int h = tamanhoCasa + 19;
+
+            Color corFundo = corDaCasa(casa);
+            g2.setColor(new Color(0, 0, 0, 50));
+            g2.fillRoundRect(x + 8, y + 12, w, h, 16, 16);
+            g2.setColor(corFundo);
+            g2.fillRoundRect(x + 3, y + 3, w, h, 16, 16);
+
+            g2.setStroke(new BasicStroke(2));
+            g2.setColor(Color.gray);
+            g2.drawRoundRect(x + 3, y + 3, w, h, 16, 16);
+
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(1));
+            g2.drawRoundRect(x + 5, y + 5, w - 4, h - 4, 12, 12);
+
+            g2.setFont(numeroFonte);
+            g2.setColor(Color.WHITE);
+            String numero = String.valueOf(i + 1);
+            FontMetrics fmn = g2.getFontMetrics();
+            int numeroX = x + (w - fmn.stringWidth(numero)) / 2;
+            int numeroY = y + 20;
+            g2.drawString(numero, numeroX, numeroY);
 
             String instrucao = casa.getInstrucao();
             if (instrucao != null) {
-                g.setFont(new Font("SansSerif", Font.PLAIN, 11));
-                FontMetrics fm = g.getFontMetrics();
-                String[] palavras = instrucao.split(" ");
-                int linhaY = y + 26;
-                int espacamentoLinha = 14;
+                g2.setFont(textoFonte);
+                g2.setColor(Color.BLACK);
+                FontMetrics fmi = g2.getFontMetrics();
+                int linhaY = y + 36;
+                int espacamento = 13;
+                int maxWidth = w - 10;
                 String linha = "";
 
-                for (String p : palavras) {
-                    if (fm.stringWidth(linha + p) > (cW - 8)) {
-                        g.drawString(linha.trim(), x + 4, linhaY);
-                        linhaY += espacamentoLinha;
-                        linha = p + " ";
+                for (String palavra : instrucao.split(" ")) {
+                    String teste = linha.isEmpty() ? palavra : linha + " " + palavra;
+                    if (fmi.stringWidth(teste) > maxWidth) {
+                        g2.drawString(linha, x + 8, linhaY);
+                        linha = palavra;
+                        linhaY += espacamento;
+                        if (linhaY > y + h - 10) break;
                     } else {
-                        linha += p + " ";
+                        linha = teste;
                     }
                 }
-                if (!linha.trim().isEmpty()) {
-                    g.drawString(linha.trim(), x + 4, linhaY);
+                if (!linha.isEmpty() && linhaY <= y + h - 10) {
+                    g2.drawString(linha, x + 8, linhaY);
                 }
             }
 
-            Color[] coresJog = {Color.BLUE, Color.RED, Color.GREEN, Color.MAGENTA};
-            int px = x + 3;
-            for (int j = 0; j < jogadores.size(); j++) {
-                if (jogadores.get(j).getCasas() == i) {
-                    BufferedImage img = jogadorImgs[j % jogadorImgs.length];
-                    int drawX = px;
-                    int drawY = y + cH - PLAYER_IMG_H - 2;
-                    if (img != null) {
-                        g.drawImage(img, drawX, drawY, PLAYER_IMG_W, PLAYER_IMG_H, null);
-                    } else {
-                        g.setColor(coresJog[j % coresJog.length]);
-                        g.fillOval(drawX, drawY, PLAYER_IMG_W, PLAYER_IMG_H);
-                        g.setColor(Color.WHITE);
-                        g.setFont(new Font("SansSerif", Font.BOLD, 8));
-                        g.drawString(jogadores.get(j).getNome().substring(0, 1), drawX + 5, drawY + PLAYER_IMG_H - 4);
-                    }
-                    px += PLAYER_IMG_W + 2;
-                }
-            }
+            int contador = 0;
+
+for (int j = 0; j < jogadores.size(); j++) {
+    if (jogadores.get(j).getCasas() == i) {
+
+        int coluna = contador % 2;  // 0 ou 1
+        int linha = contador / 2;   // 0 ou 1
+
+        int jogadorX = x + 6 + coluna * (PLAYER_IMG_W + 4);
+        int jogadorY = y + h - PLAYER_IMG_H - 4 - linha * (PLAYER_IMG_H + 4);
+
+        BufferedImage img = jogadorImgs[j % jogadorImgs.length];
+
+        if (img != null) {
+            g2.drawImage(img, jogadorX, jogadorY,
+                    PLAYER_IMG_W, PLAYER_IMG_H, null);
+        } else {
+            Color[] coresJog = {
+                    Color.BLUE,
+                    Color.RED,
+                    Color.GREEN,
+                    Color.MAGENTA
+            };
+
+            g2.setColor(coresJog[j % coresJog.length]);
+            g2.fillOval(jogadorX, jogadorY,
+                    PLAYER_IMG_W, PLAYER_IMG_H);
+        }
+
+        contador++;
+    }
+}
         }
     }
 
     public static Color corDaCasa(Casa c) {
         if (c instanceof CasaFinanceira) {
-            if (((CasaFinanceira) c).getTipoFinanceira() == CasaFinanceira.TipoFinanceira.GANHO) return new Color(180, 230, 180);
-            else return new Color(230, 180, 180);
+            if (((CasaFinanceira) c).getTipoFinanceira() == CasaFinanceira.TipoFinanceira.GANHO) return new Color(102, 204, 102);
+            else return new Color(255, 153, 153);
         }
         if (c instanceof CasaMovimento) {
-            if (((CasaMovimento) c).getTipoMovimento() == CasaMovimento.TipoMovimento.AVANCAR) return new Color(180, 210, 240);
-            else return new Color(240, 200, 150);
+            if (((CasaMovimento) c).getTipoMovimento() == CasaMovimento.TipoMovimento.AVANCAR) return new Color(102, 178, 255);
+            else return new Color(255, 204, 102);
         }
-        if (c instanceof CasaEvento) return new Color(255, 240, 150);
+        if (c instanceof CasaEvento) return new Color(255, 221, 102);
         if (c instanceof CasaEspecial) {
             CasaEspecial.TipoEspecial tipo = ((CasaEspecial) c).getTipoEspecial();
-            if (tipo == CasaEspecial.TipoEspecial.SORTE)       return new Color(180, 230, 180);
-            if (tipo == CasaEspecial.TipoEspecial.AZAR)        return new Color(230, 180, 180);
-            if (tipo == CasaEspecial.TipoEspecial.PULAR_TURNO) return new Color(210, 210, 210);
-            if (tipo == CasaEspecial.TipoEspecial.JOGAR_NOVAMENTE) return new Color(180, 230, 180);
+            if (tipo == CasaEspecial.TipoEspecial.SORTE)       return new Color(102, 255, 178);
+            if (tipo == CasaEspecial.TipoEspecial.AZAR)        return new Color(255, 153, 153);
+            if (tipo == CasaEspecial.TipoEspecial.PULAR_TURNO) return new Color(183, 183, 255);
+            if (tipo == CasaEspecial.TipoEspecial.JOGAR_NOVAMENTE) return new Color(102, 255, 178);
         }
-        return Color.LIGHT_GRAY;
+        return new Color(220, 220, 220);
     }
 
     public static void jogar() {
         if (jogadores.isEmpty() || tabuleiro == null || tabuleiro.getCasas().isEmpty()) return;
+        if (animando) return;
 
         Jogador atual = jogadores.get(rodada.getJogadorAtual());
 
-            if (!atual.isTurnoAtivo()) {
-                JOptionPane.showMessageDialog(null,
-                        atual.getNome() + " está com o turno pulado e perdeu a vez!",
-                        "Turno Pulado", JOptionPane.WARNING_MESSAGE);
-                atual.jogarNovamente();
-                rodada.proximoTurno(jogadores);
-                Jogador proximo = jogadores.get(rodada.getJogadorAtual());
-                labelStatus.setText("Rodada " + rodada.getNumeroRodada() + " - Vez de: " + proximo.getNome());
-                return;
-            }
+        if (!atual.isTurnoAtivo()) {
+            JOptionPane.showMessageDialog(null,
+                    atual.getNome() + " está com o turno pulado e perdeu a vez!",
+                    "Turno Pulado", JOptionPane.WARNING_MESSAGE);
+            atual.jogarNovamente();
+            rodada.proximoTurno(jogadores);
+            Jogador proximo = jogadores.get(rodada.getJogadorAtual());
+            labelStatus.setText("Rodada " + rodada.getNumeroRodada() + " - Vez de: " + proximo.getNome());
+            return;
+        }
 
-            int casaAnterior = atual.getCasas();
-            int dado = roleta.girar();
+        int casaAnterior = atual.getCasas();
+        int dado = roleta.girar();
 
-            int novaCasa = Math.min(atual.getCasas() + dado, tabuleiro.getCasas().size() - 1);
-            atual.setCasas(novaCasa);
+        int novaCasa = Math.min(atual.getCasas() + dado, tabuleiro.getCasas().size() - 1);
+        Casa casa = tabuleiro.getCasa(novaCasa);
 
+        moverJogadorPassoAPasso(atual, novaCasa, () -> {
             System.out.println(">>> " + atual.getNome() + " estava na Casa " + (casaAnterior + 1) +
                     ". Tirou " + dado + " e caiu na Casa " + (novaCasa + 1));
 
-            Casa casa = tabuleiro.getCasa(novaCasa);
             casa.aplicar(atual);
 
             String mensagemExtra = "";
@@ -210,6 +339,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null,
                         atual.getNome() + " venceu!\nPatrimônio final: R$" + (int) atual.getPatrimonio(),
                         "Fim de Jogo!", JOptionPane.INFORMATION_MESSAGE);
+                animando = false;
                 return;
             }
 
@@ -218,6 +348,7 @@ public class Main {
             labelStatus.setText("Rodada " + rodada.getNumeroRodada() + " - Vez de: " + proximo.getNome());
 
             if (jogoPainel != null) jogoPainel.repintarTabuleiro();
+        });
     }
 
     public static void salvarJogo() {

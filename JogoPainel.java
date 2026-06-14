@@ -17,14 +17,16 @@ public class JogoPainel extends JPanel {
         };
         painelTabuleiro.setBackground(Color.WHITE);
 
-        painelDireito = new JPanel();
-        painelDireito.setLayout(new BoxLayout(painelDireito, BoxLayout.Y_AXIS));
-        painelDireito.setPreferredSize(new Dimension(220, 0));
-        painelDireito.setBorder(BorderFactory.createEmptyBorder(8, 5, 8, 8));
+        painelDireito = new JPanel(new BorderLayout());
+        painelDireito.setPreferredSize(new Dimension(170, 0));
+        painelDireito.setBackground(new Color(30, 100, 210));
+        painelDireito.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JPanel painelBaixo = new JPanel(new FlowLayout());
+        JPanel painelBaixo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        painelBaixo.setOpaque(false);
         Jogador primeiro = Main.jogadores.get(Main.rodada.getJogadorAtual());
         Main.labelStatus = new JLabel("Rodada " + Main.rodada.getNumeroRodada() + " - Vez de: " + primeiro.getNome());
+        Main.labelStatus.setForeground(Color.WHITE);
         JButton btnGirar = new JButton("Girar Roleta");
         btnGirar.addActionListener(e -> Main.jogar());
         painelBaixo.add(Main.labelStatus);
@@ -39,32 +41,39 @@ public class JogoPainel extends JPanel {
 
     public void atualizarPainelDireito() {
         painelDireito.removeAll();
-        painelDireito.add(new JLabel("Jogadores:"));
-        painelDireito.add(Box.createVerticalStrut(5));
+
+        JPanel topo = new JPanel();
+        topo.setOpaque(false);
+        topo.setLayout(new BoxLayout(topo, BoxLayout.Y_AXIS));
+        JLabel lblTitulo = new JLabel("Jogadores:");
+        lblTitulo.setForeground(Color.WHITE);
+        topo.add(lblTitulo);
+        topo.add(Box.createVerticalStrut(8));
+
         for (Jogador j : Main.jogadores) {
             JLabel lj = new JLabel(j.getNome() + " - R$" + (int) j.getPatrimonio());
-            painelDireito.add(lj);
+            lj.setForeground(Color.WHITE);
+            topo.add(lj);
+            topo.add(Box.createVerticalStrut(5));
         }
-
-        painelDireito.add(Box.createVerticalStrut(20));
 
         JButton btnSalvar = new JButton("Salvar Jogo");
         btnSalvar.addActionListener(e -> Main.salvarJogo());
-        painelDireito.add(btnSalvar);
-
-        painelDireito.add(Box.createVerticalStrut(5));
-
         JButton btnCarregar = new JButton("Carregar Jogo");
         btnCarregar.addActionListener(e -> Main.carregarJogo());
-        painelDireito.add(btnCarregar);
-
-        painelDireito.add(Box.createVerticalStrut(20));
-
         JButton btnQuit = new JButton("Sair do Jogo");
         btnQuit.addActionListener(e -> System.exit(0));
         btnQuit.setBackground(new Color(255, 100, 100));
         btnQuit.setForeground(Color.WHITE);
-        painelDireito.add(btnQuit);
+
+        JPanel baseBotoes = new JPanel(new GridLayout(3, 1, 0, 8));
+        baseBotoes.setOpaque(false);
+        baseBotoes.add(btnSalvar);
+        baseBotoes.add(btnCarregar);
+        baseBotoes.add(btnQuit);
+
+        painelDireito.add(topo, BorderLayout.NORTH);
+        painelDireito.add(baseBotoes, BorderLayout.SOUTH);
 
         painelDireito.revalidate();
         painelDireito.repaint();

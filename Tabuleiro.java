@@ -21,13 +21,7 @@ public class Tabuleiro implements Serializable {
         if (casa == null) {
             return;
         }
-
-        if (casas.size() < quantidadeCasas) {
-            casas.add(casa);
-        } else {
-            casas.add(casa);
-            quantidadeCasas = casas.size();
-        }
+        casas.add(casa);
     }
 
     public Casa getCasa(int indice) {
@@ -77,7 +71,7 @@ public class Tabuleiro implements Serializable {
         setCasas(new CasaEspecial("Grande sorte", 3000.0, CasaEspecial.TipoEspecial.SORTE));
         setCasas(new CasaMovimento("Avance 1 casa rumo à aposentadoria", CasaMovimento.TipoMovimento.AVANCAR, 1));
         setCasas(new CasaFinanceira("Bônus final", 2000.0, CasaFinanceira.TipoFinanceira.GANHO));
-        setCasas(new CasaEvento("Último evento: comemore", CasaEvento.TipoEvento.ANIVERSARIO, 500.0));
+        setCasas(new CasaEvento("Comemore: Você se aposentou!", CasaEvento.TipoEvento.ANIVERSARIO, 500.0));
     }
 }
 
