@@ -11,10 +11,10 @@ public class Jogador implements Movimentavel, Serializable {
     private double salario;
     private double patrimonio = 10000.00;
     private boolean casamento = false;
-    private boolean seguro = false;
+    private CartaSeguro seguro = null;
     private int casas = 0;
     private boolean turnoAtivo = true;
-    private final ArrayList<Propriedade> propriedades;
+    private final ArrayList<CartaPropriedade> propriedades;
     private final ArrayList<Carta> cartas;
 
     public Jogador(String cor,
@@ -56,6 +56,10 @@ public class Jogador implements Movimentavel, Serializable {
     }
 
     public boolean temSeguro() {
+        return seguro != null;
+    }
+
+    public CartaSeguro getSeguro() {
         return seguro;
     }
 
@@ -79,7 +83,7 @@ public class Jogador implements Movimentavel, Serializable {
         return aposentadoria;
     }
 
-    public ArrayList<Propriedade> getPropriedades() {
+    public ArrayList<CartaPropriedade> getPropriedades() {
         return propriedades;
     }
 
@@ -87,7 +91,7 @@ public class Jogador implements Movimentavel, Serializable {
         return cartas;
     }
 
-    public void setSeguro(boolean seguro) {
+    public void setSeguro(CartaSeguro seguro) {
         this.seguro = seguro;
     }
 
@@ -131,14 +135,14 @@ public class Jogador implements Movimentavel, Serializable {
         this.patrimonio += this.salario;
     }
 
-    public boolean podeComprarPropriedade(Propriedade propriedade) {
+    public boolean podeComprarPropriedade(CartaPropriedade propriedade) {
         return propriedade != null && this.patrimonio >= propriedade.getValorCompra();
     }
 
-    public void tentarComprarPropriedade(Propriedade propriedade) throws SaldoInsuficienteException {
+    public void tentarComprarPropriedade(CartaPropriedade propriedade) throws SaldoInsuficienteException {
         if (!podeComprarPropriedade(propriedade)) {
             throw new SaldoInsuficienteException(this.nome + " não tem dinheiro suficiente!\n" +
-                    "Valor da propriedade: R$" + propriedade.getValorCompra().intValue() +
+                    "Valor da propriedade: R$" + (int) propriedade.getValorCompra() +
                     "\nSeu saldo: R$" + (int) this.patrimonio);
         }
         
@@ -146,7 +150,7 @@ public class Jogador implements Movimentavel, Serializable {
         this.propriedades.add(propriedade);
     }
 
-    public void comprarPropriedade(Propriedade propriedade) {
+    public void comprarPropriedade(CartaPropriedade propriedade) {
         try {
             tentarComprarPropriedade(propriedade);
         } catch (SaldoInsuficienteException e) {
@@ -154,7 +158,7 @@ public class Jogador implements Movimentavel, Serializable {
         }
     }
 
-    public void venderPropriedade(Propriedade propriedade) {
+    public void venderPropriedade(CartaPropriedade propriedade) {
         if (propriedade == null) {
             return;
         }
