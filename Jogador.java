@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Jogador implements Movimentavel, Serializable {
     private String cor;
@@ -131,12 +131,21 @@ public class Jogador implements Movimentavel, Serializable {
         this.patrimonio += this.salario;
     }
 
-    public void comprarPropriedade(Propriedade propriedade) {
-        if (propriedade == null) {
-            return;
+    public boolean podeComprarPropriedade(Propriedade propriedade) {
+        return propriedade != null && this.patrimonio >= propriedade.getValorCompra();
+    }
+
+    public boolean tentarComprarPropriedade(Propriedade propriedade) {
+        if (!podeComprarPropriedade(propriedade)) {
+            return false;
         }
         perderDinheiro(propriedade.getValorCompra());
         this.propriedades.add(propriedade);
+        return true;
+    }
+
+    public void comprarPropriedade(Propriedade propriedade) {
+        tentarComprarPropriedade(propriedade);
     }
 
     public void venderPropriedade(Propriedade propriedade) {

@@ -42,38 +42,90 @@ public class JogoPainel extends JPanel {
     public void atualizarPainelDireito() {
         painelDireito.removeAll();
 
-        JPanel topo = new JPanel();
-        topo.setOpaque(false);
-        topo.setLayout(new BoxLayout(topo, BoxLayout.Y_AXIS));
-        JLabel lblTitulo = new JLabel("Jogadores:");
+        JPanel painel = new JPanel();
+        painel.setOpaque(false);
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        
+        JLabel lblTitulo = new JLabel("JOGADORES:");
         lblTitulo.setForeground(Color.WHITE);
-        topo.add(lblTitulo);
-        topo.add(Box.createVerticalStrut(8));
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 13));
+        painel.add(lblTitulo);
+        painel.add(Box.createVerticalStrut(10));
 
         for (Jogador j : Main.jogadores) {
-            JLabel lj = new JLabel(j.getNome() + " - R$" + (int) j.getPatrimonio());
-            lj.setForeground(Color.WHITE);
-            topo.add(lj);
-            topo.add(Box.createVerticalStrut(5));
+            JLabel lbl = new JLabel(j.getNome() + " - R$" + (int) j.getPatrimonio());
+            lbl.setForeground(Color.WHITE);
+            painel.add(lbl);
+            
+            JLabel lblProf = new JLabel("Profissão: " + j.getProfissao().getNome());
+            lblProf.setForeground(new Color(200, 200, 255));
+            lblProf.setFont(new Font("Arial", Font.PLAIN, 10));
+            painel.add(lblProf);
+            
+            JLabel lblProps = new JLabel("Propriedades: " + j.getPropriedades().size());
+            lblProps.setForeground(new Color(200, 200, 255));
+            lblProps.setFont(new Font("Arial", Font.PLAIN, 10));
+            painel.add(lblProps);
+            
+            painel.add(Box.createVerticalStrut(8));
         }
+        
+        painel.add(Box.createVerticalStrut(5));
+        
+        // Carta Seguro
+        Jogador jogadorAtual = Main.jogadores.get(Main.rodada.getJogadorAtual());
+        JPanel cartaSeguro = new JPanel();
+        cartaSeguro.setLayout(new BorderLayout());
+        cartaSeguro.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        cartaSeguro.setPreferredSize(new Dimension(150, 40));
+        
+        if (jogadorAtual.temSeguro()) {
+            cartaSeguro.setBackground(new Color(100, 200, 255));
+            JLabel lblSeguro = new JLabel("✓ SEGURO ATIVO");
+            lblSeguro.setFont(new Font("Arial", Font.BOLD, 11));
+            lblSeguro.setForeground(Color.BLACK);
+            lblSeguro.setHorizontalAlignment(JLabel.CENTER);
+            cartaSeguro.add(lblSeguro, BorderLayout.CENTER);
+        } else {
+            cartaSeguro.setBackground(new Color(150, 150, 150));
+            JLabel lblSeguro = new JLabel("SEGURO INATIVO");
+            lblSeguro.setFont(new Font("Arial", Font.PLAIN, 10));
+            lblSeguro.setForeground(Color.BLACK);
+            lblSeguro.setHorizontalAlignment(JLabel.CENTER);
+            cartaSeguro.add(lblSeguro, BorderLayout.CENTER);
+        }
+        
+        painel.add(cartaSeguro);
+        painel.add(Box.createVerticalStrut(15));
+
+        // Botões
+        JButton btnComprarCasa = new JButton("Comprar Casa");
+        btnComprarCasa.addActionListener(e -> Main.tentarComprarCasaDoTurno());
+
+        JButton btnSeguro = new JButton("Comprar Seguro");
+        btnSeguro.addActionListener(e -> Main.tentarComprarSeguro());
 
         JButton btnSalvar = new JButton("Salvar Jogo");
         btnSalvar.addActionListener(e -> Main.salvarJogo());
+        
         JButton btnCarregar = new JButton("Carregar Jogo");
         btnCarregar.addActionListener(e -> Main.carregarJogo());
+        
         JButton btnQuit = new JButton("Sair do Jogo");
         btnQuit.addActionListener(e -> System.exit(0));
         btnQuit.setBackground(new Color(255, 100, 100));
         btnQuit.setForeground(Color.WHITE);
 
-        JPanel baseBotoes = new JPanel(new GridLayout(3, 1, 0, 8));
-        baseBotoes.setOpaque(false);
-        baseBotoes.add(btnSalvar);
-        baseBotoes.add(btnCarregar);
-        baseBotoes.add(btnQuit);
+        JPanel botoes = new JPanel(new GridLayout(5, 1, 0, 8));
+        botoes.setOpaque(false);
+        botoes.add(btnComprarCasa);
+        botoes.add(btnSeguro);
+        botoes.add(btnSalvar);
+        botoes.add(btnCarregar);
+        botoes.add(btnQuit);
 
-        painelDireito.add(topo, BorderLayout.NORTH);
-        painelDireito.add(baseBotoes, BorderLayout.SOUTH);
+        painelDireito.add(painel, BorderLayout.NORTH);
+        painelDireito.add(botoes, BorderLayout.SOUTH);
 
         painelDireito.revalidate();
         painelDireito.repaint();

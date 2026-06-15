@@ -1,6 +1,8 @@
-import java.util.Map;
-import java.util.HashMap;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Profissao implements Serializable {
 
@@ -27,6 +29,12 @@ public class Profissao implements Serializable {
 
     public static double consultarSalario(String nomeDaProfissao) {
         return catalogoSalarios.getOrDefault(nomeDaProfissao, 0.0);
+    }
+
+    public static String[] listarProfissoesDisponiveis() {
+        ArrayList<String> nomes = new ArrayList<>(catalogoSalarios.keySet());
+        Collections.sort(nomes);
+        return nomes.toArray(new String[0]);
     }
 
     @Override

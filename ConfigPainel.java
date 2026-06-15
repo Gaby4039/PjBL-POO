@@ -69,16 +69,28 @@ public class ConfigPainel extends JPanel {
         btnIniciar.addActionListener(e -> {
             int qtd = comboQtd.getSelectedIndex() + 2;
             Main.jogadores.clear();
+            Main.rodada = new Rodada();
+
+            StringBuilder resumoProfissoes = new StringBuilder("Profissões sorteadas:\n");
 
             for (int i = 0; i < qtd; i++) {
                 String nome = camposNome[i].getText().trim();
                 if (nome.isEmpty()) nome = "Jogador " + (i + 1);
-                Main.jogadores.add(new Jogador(coresFixas[i], nome, new Profissao("Desenvolvedor"), false));
+                Profissao profissaoSorteada = Main.sortearProfissaoAleatoria();
+                Main.jogadores.add(new Jogador(coresFixas[i], nome, profissaoSorteada, false));
+                resumoProfissoes.append("- ")
+                        .append(nome)
+                        .append(": ")
+                        .append(profissaoSorteada.getNome())
+                        .append(" (R$")
+                        .append((int) profissaoSorteada.getSalario())
+                        .append(")\n");
             }
 
             Main.tabuleiro = new Tabuleiro();
             Main.tabuleiro.montarTabuleiro();
             Main.criarJanelaJogo();
+            JOptionPane.showMessageDialog(null, resumoProfissoes.toString(), "Sorteio de Profissões", JOptionPane.INFORMATION_MESSAGE);
         });
 
         gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 2;
