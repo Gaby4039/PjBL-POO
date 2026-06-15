@@ -5,7 +5,7 @@ public class MenuPainel extends JPanel {
     private final Image fundoMenu;
 
     public MenuPainel() {
-        fundoMenu = new ImageIcon("backgroundMenu4.png").getImage();
+        fundoMenu = new ImageIcon("PjBL-POO/backgroundMenu4.png").getImage();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel titulo = new JLabel("JOGO DA VIDA");

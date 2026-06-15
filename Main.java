@@ -27,7 +27,7 @@ public class Main {
     private static BufferedImage fundoTabuleiro;
 
     public static void main(String[] args) {
-        Profissao.carregarProfissoesDoCSV("profissoes.csv");
+        Profissao.carregarProfissoesDoCSV("PjBL-POO/profissoes.csv");
         janela = new JFrame("Jogo da Vida");
         janela.setSize(900, 600);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -8,7 +8,7 @@ public class ConfigPainel extends JPanel {
     private final Image fundoConfig;
 
     public ConfigPainel() {
-        fundoConfig = Main.carregarImagem("config_background.png");
+        fundoConfig = Main.carregarImagem("PjBL-POO/config_background.png");
         setLayout(new GridBagLayout());
         setBackground(new Color(240, 248, 255));
         GridBagConstraints gbc = new GridBagConstraints();
