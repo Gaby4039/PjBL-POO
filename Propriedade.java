@@ -12,7 +12,7 @@ public class Propriedade implements Serializable {
     static {
         catalogoPropriedades.put("Mansão", 50000000.0);
         catalogoPropriedades.put("Cabana", 300000.0);
-        catalogoPropriedades.put("Casa", 150000.0);
+        catalogoPropriedades.put("Casa", 15000.0);
         catalogoPropriedades.put("Apartamento", 250000.0);
     }
 

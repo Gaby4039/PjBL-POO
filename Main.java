@@ -27,6 +27,7 @@ public class Main {
     private static BufferedImage fundoTabuleiro;
 
     public static void main(String[] args) {
+        Profissao.carregarProfissoesDoCSV("profissoes.csv");
         janela = new JFrame("Jogo da Vida");
         janela.setSize(900, 600);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +66,7 @@ public class Main {
         }
     }
 
-    private static BufferedImage carregarImagem(String nome) {
+    public static BufferedImage carregarImagem(String nome) {
         try {
             File f = new File(nome);
             if (f.exists()) return ImageIO.read(f);
@@ -289,21 +290,22 @@ public class Main {
         }
 
         Jogador atual = jogadores.get(rodada.getJogadorAtual());
-        Propriedade casa = new Propriedade("Casa " + contadorCasas++, "Casa");
-        boolean comprou = atual.tentarComprarPropriedade(casa);
+        Propriedade casa = new Propriedade("Casa " + contadorCasas, "Casa");
 
-        if (comprou) {
+        try {
+            atual.tentarComprarPropriedade(casa);
+            
+            contadorCasas++;
             JOptionPane.showMessageDialog(null,
                     atual.getNome() + " comprou uma casa!\n" +
                     "Casa: " + casa.getNome() +
                     "\nValor: R$" + casa.getValorCompra().intValue() +
                     "\nSaldo atual: R$" + (int) atual.getPatrimonio(),
                     "Compra realizada", JOptionPane.INFORMATION_MESSAGE);
-        } else {
+                    
+        } catch (SaldoInsuficienteException e) {
             JOptionPane.showMessageDialog(null,
-                    atual.getNome() + " nao tem dinheiro suficiente!\n" +
-                    "Valor da casa: R$" + casa.getValorCompra().intValue() +
-                    "\nSeu saldo: R$" + (int) atual.getPatrimonio(),
+                    e.getMessage(), 
                     "Saldo insuficiente", JOptionPane.WARNING_MESSAGE);
         }
 

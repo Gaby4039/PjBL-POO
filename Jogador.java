@@ -135,17 +135,23 @@ public class Jogador implements Movimentavel, Serializable {
         return propriedade != null && this.patrimonio >= propriedade.getValorCompra();
     }
 
-    public boolean tentarComprarPropriedade(Propriedade propriedade) {
+    public void tentarComprarPropriedade(Propriedade propriedade) throws SaldoInsuficienteException {
         if (!podeComprarPropriedade(propriedade)) {
-            return false;
+            throw new SaldoInsuficienteException(this.nome + " não tem dinheiro suficiente!\n" +
+                    "Valor da propriedade: R$" + propriedade.getValorCompra().intValue() +
+                    "\nSeu saldo: R$" + (int) this.patrimonio);
         }
+        
         perderDinheiro(propriedade.getValorCompra());
         this.propriedades.add(propriedade);
-        return true;
     }
 
     public void comprarPropriedade(Propriedade propriedade) {
-        tentarComprarPropriedade(propriedade);
+        try {
+            tentarComprarPropriedade(propriedade);
+        } catch (SaldoInsuficienteException e) {
+            System.out.println("Aviso: " + e.getMessage());
+        }
     }
 
     public void venderPropriedade(Propriedade propriedade) {

@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,13 +14,30 @@ public class Profissao implements Serializable {
 
     private static final Map<String, Double> catalogoSalarios = new HashMap<>();
 
-    static {
-        catalogoSalarios.put("Desenvolvedor", 5000.0);
-        catalogoSalarios.put("Médico", 15000.0);
-        catalogoSalarios.put("Professor", 4500.0);
-        catalogoSalarios.put("Engenheiro", 8000.0);
+    public static void carregarProfissoesDoCSV(String caminhoArquivo) {
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+            System.out.println("Carregando profissões do arquivo CSV...");
+            
+            while ((linha = br.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
+                
+                String[] partes = linha.split(";");
+                
+                if (partes.length == 2) {
+                    String nomeProf = partes[0].trim();
+                    double salarioProf = Double.parseDouble(partes[1].trim());
+                    catalogoSalarios.put(nomeProf, salarioProf);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo CSV. Carregando profissões padrão. Erro: " + e.getMessage());
+            catalogoSalarios.put("Desenvolvedor Padrão", 5000.0);
+            catalogoSalarios.put("Médico Padrão", 7000.0);
+        } catch (NumberFormatException e) {
+            System.err.println("Erro de formatação de número no CSV: " + e.getMessage());
+        }
     }
-
 
     public Profissao(String nome) {
         this.nome = nome;
