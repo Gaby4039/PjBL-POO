@@ -24,13 +24,27 @@ public class JogoPainel extends JPanel {
 
         JPanel painelBaixo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         painelBaixo.setOpaque(false);
+        
         Jogador primeiro = Main.jogadores.get(Main.rodada.getJogadorAtual());
         Main.labelStatus = new JLabel("Rodada " + Main.rodada.getNumeroRodada() + " - Vez de: " + primeiro.getNome());
         Main.labelStatus.setForeground(Color.WHITE);
+        
         JButton btnGirar = new JButton("Girar Roleta");
         btnGirar.addActionListener(e -> Main.jogar());
+
+        Main.lblRoleta = new JLabel(" ? ");
+        Main.lblRoleta.setFont(new Font("Arial", Font.BOLD, 22));
+        Main.lblRoleta.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        Main.lblRoleta.setOpaque(true);
+        Main.lblRoleta.setBackground(Color.WHITE);
+        Main.lblRoleta.setPreferredSize(new Dimension(45, 45));
+        Main.lblRoleta.setHorizontalAlignment(SwingConstants.CENTER);
+
         painelBaixo.add(Main.labelStatus);
+        painelBaixo.add(Box.createHorizontalStrut(20));
         painelBaixo.add(btnGirar);
+        painelBaixo.add(Box.createHorizontalStrut(10)); 
+        painelBaixo.add(Main.lblRoleta);
 
         add(painelTabuleiro, BorderLayout.CENTER);
         add(painelDireito,   BorderLayout.EAST);
@@ -49,22 +63,26 @@ public class JogoPainel extends JPanel {
         JLabel lblTitulo = new JLabel("JOGADORES:");
         lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 13));
+        lblTitulo.setAlignmentX(Component.LEFT_ALIGNMENT);
         painel.add(lblTitulo);
         painel.add(Box.createVerticalStrut(10));
 
         for (Jogador j : Main.jogadores) {
             JLabel lbl = new JLabel(j.getNome() + " - R$" + (int) j.getPatrimonio());
             lbl.setForeground(Color.WHITE);
+            lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
             painel.add(lbl);
             
             JLabel lblProf = new JLabel("Profissão: " + j.getProfissao().getNome());
             lblProf.setForeground(new Color(200, 200, 255));
             lblProf.setFont(new Font("Arial", Font.PLAIN, 10));
+            lblProf.setAlignmentX(Component.LEFT_ALIGNMENT);
             painel.add(lblProf);
             
             JLabel lblProps = new JLabel("Propriedades: " + j.getPropriedades().size());
             lblProps.setForeground(new Color(200, 200, 255));
             lblProps.setFont(new Font("Arial", Font.PLAIN, 10));
+            lblProps.setAlignmentX(Component.LEFT_ALIGNMENT);
             painel.add(lblProps);
             
             painel.add(Box.createVerticalStrut(8));
@@ -78,6 +96,8 @@ public class JogoPainel extends JPanel {
         cartaSeguro.setLayout(new BorderLayout());
         cartaSeguro.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         cartaSeguro.setPreferredSize(new Dimension(150, 40));
+        cartaSeguro.setMaximumSize(new Dimension(180, 40));
+        cartaSeguro.setAlignmentX(Component.LEFT_ALIGNMENT);
         
         if (jogadorAtual.temSeguro()) {
             cartaSeguro.setBackground(new Color(100, 200, 255));

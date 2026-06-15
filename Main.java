@@ -17,6 +17,7 @@ public class Main {
     public static JFrame janela;
     public static JLabel labelStatus;
     public static JogoPainel jogoPainel;
+    public static JLabel lblRoleta;
     private static final Random RANDOM = new Random();
     private static int contadorCasas = 1;
     private static final String[] IMG_NAMES = {"redCar.png", "blueCar.png", "greenCar.png", "pinkCar.png"};
@@ -77,7 +78,7 @@ public class Main {
         return null;
     }
 
-    private static final int ANIMACAO_DELAY_MS = 250;
+    private static final int ANIMACAO_DELAY_MS = 150;
     private static boolean animando = false;
 
     public static void montarTabuleiro() {
@@ -403,76 +404,101 @@ public class Main {
             return;
         }
 
-        int casaAnterior = atual.getCasas();
+        animando = true;
+
         int dado = roleta.girar();
-
         int novaCasa = Math.min(atual.getCasas() + dado, tabuleiro.getCasas().size() - 1);
-        Casa casa = tabuleiro.getCasa(novaCasa);
 
-        atual.setCasas(novaCasa);
+        System.out.println(">>> " + atual.getNome() + " estava na Casa " + (atual.getCasas() + 1) +
+                ". Tirou " + dado + " e vai para a Casa " + (novaCasa + 1));
 
-        System.out.println(">>> " + atual.getNome() + " estava na Casa " + (casaAnterior + 1) +
-                ". Tirou " + dado + " e caiu na Casa " + (novaCasa + 1));
 
-        String instrucao = casa.getInstrucao();
+        Timer timerRoleta = new Timer(60, null);
+        int[] contadorGiros = {0}; 
+        int maxGiros = 15; 
+
+        timerRoleta.addActionListener(e -> {
+            contadorGiros[0]++;
+            
+            if (contadorGiros[0] < maxGiros) {
+                int numeroFalso = RANDOM.nextInt(6) + 1;
+                lblRoleta.setText(String.valueOf(numeroFalso));
+                lblRoleta.setBackground(new Color(220, 220, 220));
+            } else {
+                ((Timer)e.getSource()).stop();
+                lblRoleta.setText(String.valueOf(dado));
+                lblRoleta.setBackground(new Color(255, 255, 150));
+                
+                moverJogadorPassoAPasso(atual, novaCasa, () -> {
+                    
+                    Casa casa = tabuleiro.getCasa(novaCasa);
+                    String instrucao = casa.getInstrucao();
+                    
+                    boolean ehEventoRuim = instrucao != null && (instrucao.contains("Multa") || instrucao.contains("Azar"));
+                    
+                    if (atual.temSeguro() && ehEventoRuim) {
+                        atual.setSeguro(false);
+                        JOptionPane.showMessageDialog(null,
+                                "Seu seguro foi acionado!\nVocê está protegido desta vez.",
+                                "Seguro Acionado!", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        casa.aplicar(atual);
+                    }
+
+                    if ((novaCasa + 1) % 5 == 0) {
+                        atual.receberSalario();
+                        JOptionPane.showMessageDialog(null,
+                                atual.getNome() + " chegou na Casa " + (novaCasa + 1) + " e recebeu salário!\n" +
+                                "Salário: R$" + (int) atual.getSalario() +
+                                "\nSaldo total: R$" + (int) atual.getPatrimonio(),
+                                "Salário Recebido!", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                    String mensagemExtra = "";
+                    if (atual.getCasas() != novaCasa) {
+                        atual.setCasas(Math.min(atual.getCasas(), tabuleiro.getCasas().size() - 1));
+                        mensagemExtra = "\n\nEfeito da casa ativado! Você foi movido para a Casa " + (atual.getCasas() + 1) + ".";
+                        System.out.println(">>> EFEITO APLICADO! " + atual.getNome() +
+                                " foi arremessado para a Casa " + (atual.getCasas() + 1));
+                    }
+
+                    JOptionPane.showMessageDialog(null,
+                            atual.getNome() + " tirou " + dado + " na roleta." +
+                                    "\nCaiu na Casa " + (novaCasa + 1) + ": " + casa.getInstrucao() + mensagemExtra,
+                            "Resultado da Jogada", JOptionPane.INFORMATION_MESSAGE);
+
+                    if (jogoPainel != null) jogoPainel.atualizarPainelDireito();
+
+                    if (atual.getCasas() >= tabuleiro.getCasas().size() - 1) {
+                        JOptionPane.showMessageDialog(null,
+                            atual.getNome() + " venceu!" +
+                                "\nProfissão: " + atual.getProfissao().getNome() +
+                                "\nPatrimônio final: R$" + (int) atual.getPatrimonio() +
+                                "\nPropriedades: " + atual.getPropriedades().size() +
+                                "\nLista: " + resumoPropriedades(atual),
+                                "Fim de Jogo!", JOptionPane.INFORMATION_MESSAGE);
+                        animando = false;
+                        return;
+                    }
+
+                    lblRoleta.setBackground(Color.WHITE);
+                    lblRoleta.setText(" ? ");
+                    
+                    rodada.proximoTurno(jogadores);
+                    Jogador proximo = jogadores.get(rodada.getJogadorAtual());
+                    labelStatus.setText("Rodada " + rodada.getNumeroRodada() + " - Vez de: " + proximo.getNome());
+                    
+                    if (jogoPainel != null) {
+                        jogoPainel.atualizarPainelDireito();
+                        jogoPainel.repintarTabuleiro();
+                    }
+                    
+                    animando = false;
+                });
+            }
+        });
         
-        // Verifica se é um evento ruim (multa ou azar)
-        boolean ehEventoRuim = instrucao.contains("Multa") || instrucao.contains("Azar");
-        
-        // Se tem seguro e é evento ruim, usa o seguro
-        if (atual.temSeguro() && ehEventoRuim) {
-            atual.setSeguro(false);
-            JOptionPane.showMessageDialog(null,
-                    "Seu seguro foi acionado!\n" +
-                    "Você está protegido desta vez.",
-                    "Seguro Acionado!", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            // Se não tem seguro ou não é ruim, aplica o efeito normal
-            casa.aplicar(atual);
-        }
-
-        // Verifica se chegou em múltiplo de 5 para receber salário
-        if ((novaCasa + 1) % 5 == 0) {
-            atual.receberSalario();
-            JOptionPane.showMessageDialog(null,
-                    atual.getNome() + " chegou na Casa " + (novaCasa + 1) + " e recebeu salário!\n" +
-                    "Salário: R$" + (int) atual.getSalario() +
-                    "\nSaldo total: R$" + (int) atual.getPatrimonio(),
-                    "Salário Recebido!", JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        String mensagemExtra = "";
-        if (atual.getCasas() != novaCasa) {
-            atual.setCasas(Math.min(atual.getCasas(), tabuleiro.getCasas().size() - 1));
-            mensagemExtra = "\n\nEfeito da casa ativado! Você foi movido para a Casa " + (atual.getCasas() + 1) + ".";
-            System.out.println(">>> EFEITO APLICADO! " + atual.getNome() +
-                    " foi arremessado para a Casa " + (atual.getCasas() + 1));
-        }
-
-        JOptionPane.showMessageDialog(null,
-                atual.getNome() + " tirou " + dado + " na roleta." +
-                        "\nCaiu na Casa " + (novaCasa + 1) + ": " + casa.getInstrucao() + mensagemExtra,
-                "Resultado da Jogada", JOptionPane.INFORMATION_MESSAGE);
-
-        if (jogoPainel != null) jogoPainel.atualizarPainelDireito();
-
-        if (atual.getCasas() >= tabuleiro.getCasas().size() - 1) {
-            JOptionPane.showMessageDialog(null,
-                atual.getNome() + " venceu!" +
-                    "\nProfissão: " + atual.getProfissao().getNome() +
-                    "\nPatrimônio final: R$" + (int) atual.getPatrimonio() +
-                    "\nPropriedades: " + atual.getPropriedades().size() +
-                    "\nLista: " + resumoPropriedades(atual),
-                    "Fim de Jogo!", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
-
-        rodada.proximoTurno(jogadores);
-        Jogador proximo = jogadores.get(rodada.getJogadorAtual());
-        labelStatus.setText("Rodada " + rodada.getNumeroRodada() + " - Vez de: " + proximo.getNome());
-        if (jogoPainel != null) jogoPainel.atualizarPainelDireito();
-
-        if (jogoPainel != null) jogoPainel.repintarTabuleiro();
+        timerRoleta.start(); // Dá o play na roleta!
     }
 
     public static void salvarJogo() {
