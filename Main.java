@@ -68,12 +68,14 @@ public class Main {
         try {
             File f = new File(nome);
             if (f.exists()) return ImageIO.read(f);
-        } catch (Exception ignored) {}
+        } 
+        catch (Exception ignored) {}
         try {
             if (Main.class.getResourceAsStream("/" + nome) != null) {
                 return ImageIO.read(Main.class.getResourceAsStream("/" + nome));
             }
-        } catch (Exception ignored) {}
+        } 
+        catch (Exception ignored) {}
         return null;
     }
 
@@ -115,17 +117,15 @@ public class Main {
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.drawImage(
+            fundoTabuleiro,
+            0,
+            0,
+            larguraPainel,
+            alturaPainel,
+            null
+        );
 
-        if (fundoTabuleiro != null) {
-            g2.drawImage(
-                fundoTabuleiro,
-                0,
-                0,
-                larguraPainel,
-                alturaPainel,
-                null
-            );
-        }
 
         int total = tabuleiro.getCasas().size();
         int cols = 12;
@@ -134,7 +134,7 @@ public class Main {
         int tamanhoCasa = Math.min((larguraPainel - margin * 2) / cols, (alturaPainel - margin * 2) / rows) + 5;
 
         int offsetX = 2;
-        int offsetY = 2;
+        int offsetY = 3;
 
         Font numeroFonte = new Font("SansSerif", Font.BOLD, 14);
         Font textoFonte = new Font("SansSerif", Font.BOLD, 12);
@@ -189,7 +189,7 @@ public class Main {
             int x = offsetX + col * (tamanhoCasa + 2);
             int y = offsetY + row * (tamanhoCasa + 12);
             int w = tamanhoCasa;
-            int h = tamanhoCasa + 19;
+            int h = tamanhoCasa + 17;
 
             Color corFundo = corDaCasa(casa);
             g2.setColor(new Color(0, 0, 0, 50));
@@ -230,16 +230,20 @@ public class Main {
                         linha = palavra;
                         linhaY += espacamento;
                         if (linhaY > y + h - 10) break;
-                    } else {
+                    } 
+                    
+                    else {
                         linha = teste;
                     }
                 }
+
                 if (!linha.isEmpty() && linhaY <= y + h - 10) {
                     g2.drawString(linha, x + 8, linhaY);
                 }
             }
 
             int contador = 0;
+
             for (int j = 0; j < jogadores.size(); j++) {
                 if (jogadores.get(j).getCasas() == i) {
 
@@ -251,22 +255,8 @@ public class Main {
 
                     BufferedImage img = jogadorImgs[j % jogadorImgs.length];
 
-                    if (img != null) {
-                        g2.drawImage(img, jogadorX, jogadorY,
-                                PLAYER_IMG_W, PLAYER_IMG_H, null);
-                    } else {
-                        Color[] coresJog = {
-                                Color.BLUE,
-                                Color.RED,
-                                Color.GREEN,
-                                Color.MAGENTA
-                        };
-
-                        g2.setColor(coresJog[j % coresJog.length]);
-                        g2.fillOval(jogadorX, jogadorY,
-                                PLAYER_IMG_W, PLAYER_IMG_H);
-                    }
-
+                    g2.drawImage(img, jogadorX, jogadorY, PLAYER_IMG_W, PLAYER_IMG_H, null);
+    
                     contador++;
                 }
             }
@@ -451,21 +441,19 @@ public class Main {
 
         JOptionPane.showMessageDialog(null,
                 atual.getNome() + " tirou " + dado + " na roleta." +
-                        "\nCaiu na Casa " + (novaCasa + 1) + ": " + casa.getInstrucao() + mensagemExtra,
+                        "\nCaiu na Casa " + (novaCasa + 1) + ": " + casa.getInstrucao()  + mensagemExtra,
                 "Resultado da Jogada", JOptionPane.INFORMATION_MESSAGE);
 
-        if (jogoPainel != null) jogoPainel.atualizarPainelDireito();
+        jogoPainel.atualizarPainelDireito();
 
-        if (atual.getCasas() >= tabuleiro.getCasas().size() - 1) {
-            JOptionPane.showMessageDialog(null,
-                atual.getNome() + " venceu!" +
-                    "\nProfissão: " + atual.getProfissao().getNome() +
-                    "\nPatrimônio final: R$" + (int) atual.getPatrimonio() +
-                    "\nPropriedades: " + atual.getPropriedades().size() +
-                    "\nLista: " + resumoPropriedades(atual),
-                    "Fim de Jogo!", JOptionPane.INFORMATION_MESSAGE);
-            return;
-        }
+        if (atual.isAposentado()) {
+                JOptionPane.showMessageDialog(null,
+                        atual.getNome() + "SE APOSENTOU!\nPatrimônio final: R$" + (int) atual.getPatrimonio(),
+                        "Fim de Jogo!", JOptionPane.INFORMATION_MESSAGE);
+                
+                animando = false;
+                return;
+            }
 
         rodada.proximoTurno(jogadores);
         Jogador proximo = jogadores.get(rodada.getJogadorAtual());
@@ -480,7 +468,9 @@ public class Main {
             Jogo jogo = new Jogo(jogadores, tabuleiro, rodada);
             Persistencia.salvar(jogo, "jogo.dat");
             JOptionPane.showMessageDialog(null, "Jogo saved com sucesso em 'jogo.dat'!");
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao salvar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -504,7 +494,9 @@ public class Main {
             }
 
             JOptionPane.showMessageDialog(null, "Jogo carregado com sucesso!");
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Erro ao carregar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
