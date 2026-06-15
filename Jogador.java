@@ -11,10 +11,10 @@ public class Jogador implements Movimentavel, Serializable {
     private double salario;
     private double patrimonio = 10000.00;
     private boolean casamento = false;
-    private boolean seguro = false;
+    private CartaSeguro seguro = null;
     private int casas = 0;
     private boolean turnoAtivo = true;
-    private final ArrayList<Propriedade> propriedades;
+    private final ArrayList<CartaPropriedade> propriedades;
     private final ArrayList<Carta> cartas;
 
     public Jogador(String cor,
@@ -56,6 +56,10 @@ public class Jogador implements Movimentavel, Serializable {
     }
 
     public boolean temSeguro() {
+        return seguro != null;
+    }
+
+    public CartaSeguro getSeguro() {
         return seguro;
     }
 
@@ -79,7 +83,7 @@ public class Jogador implements Movimentavel, Serializable {
         return aposentadoria;
     }
 
-    public ArrayList<Propriedade> getPropriedades() {
+    public ArrayList<CartaPropriedade> getPropriedades() {
         return propriedades;
     }
 
@@ -87,7 +91,7 @@ public class Jogador implements Movimentavel, Serializable {
         return cartas;
     }
 
-    public void setSeguro(boolean seguro) {
+    public void setSeguro(CartaSeguro seguro) {
         this.seguro = seguro;
     }
 
@@ -131,11 +135,11 @@ public class Jogador implements Movimentavel, Serializable {
         this.patrimonio += this.salario;
     }
 
-    public boolean podeComprarPropriedade(Propriedade propriedade) {
+    public boolean podeComprarPropriedade(CartaPropriedade propriedade) {
         return propriedade != null && this.patrimonio >= propriedade.getValorCompra();
     }
 
-    public boolean tentarComprarPropriedade(Propriedade propriedade) {
+    public boolean tentarComprarPropriedade(CartaPropriedade propriedade) {
         if (!podeComprarPropriedade(propriedade)) {
             return false;
         }
@@ -144,11 +148,11 @@ public class Jogador implements Movimentavel, Serializable {
         return true;
     }
 
-    public void comprarPropriedade(Propriedade propriedade) {
+    public void comprarPropriedade(CartaPropriedade propriedade) {
         tentarComprarPropriedade(propriedade);
     }
 
-    public void venderPropriedade(Propriedade propriedade) {
+    public void venderPropriedade(CartaPropriedade propriedade) {
         if (propriedade == null) {
             return;
         }

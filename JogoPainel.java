@@ -81,8 +81,9 @@ public class JogoPainel extends JPanel {
         
         if (jogadorAtual.temSeguro()) {
             cartaSeguro.setBackground(new Color(100, 200, 255));
-            JLabel lblSeguro = new JLabel("✓ SEGURO ATIVO");
-            lblSeguro.setFont(new Font("Arial", Font.BOLD, 11));
+            CartaSeguro seguro = jogadorAtual.getSeguro();
+            JLabel lblSeguro = new JLabel("✓ " + seguro.getTipo() + " - R$" + (int)seguro.getValor());
+            lblSeguro.setFont(new Font("Arial", Font.BOLD, 9));
             lblSeguro.setForeground(Color.BLACK);
             lblSeguro.setHorizontalAlignment(JLabel.CENTER);
             cartaSeguro.add(lblSeguro, BorderLayout.CENTER);

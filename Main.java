@@ -278,20 +278,20 @@ public class Main {
         }
 
         Jogador atual = jogadores.get(rodada.getJogadorAtual());
-        Propriedade casa = new Propriedade("Casa " + contadorCasas++, "Casa");
+        CartaPropriedade casa = new CartaPropriedade("Casa " + contadorCasas++, "Casa", 150000.0);
         boolean comprou = atual.tentarComprarPropriedade(casa);
 
         if (comprou) {
             JOptionPane.showMessageDialog(null,
                     atual.getNome() + " comprou uma casa!\n" +
                     "Casa: " + casa.getNome() +
-                    "\nValor: R$" + casa.getValorCompra().intValue() +
+                    "\nValor: R$" + (int) casa.getValorCompra() +
                     "\nSaldo atual: R$" + (int) atual.getPatrimonio(),
                     "Compra realizada", JOptionPane.INFORMATION_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(null,
                     atual.getNome() + " nao tem dinheiro suficiente!\n" +
-                    "Valor da casa: R$" + casa.getValorCompra().intValue() +
+                    "Valor da casa: R$" + (int) casa.getValorCompra() +
                     "\nSeu saldo: R$" + (int) atual.getPatrimonio(),
                     "Saldo insuficiente", JOptionPane.WARNING_MESSAGE);
         }
@@ -326,7 +326,8 @@ public class Main {
         }
 
         atual.perderDinheiro(CUSTO_SEGURO);
-        atual.setSeguro(true);
+        CartaSeguro novoSeguro = new CartaSeguro("Seguro Completo", CUSTO_SEGURO);
+        atual.setSeguro(novoSeguro);
 
         JOptionPane.showMessageDialog(null,
                 "Seguro contratado com sucesso!\n" +
@@ -346,7 +347,7 @@ public class Main {
 
         String resultado = "";
         for (int i = 0; i < jogador.getPropriedades().size(); i++) {
-            Propriedade p = jogador.getPropriedades().get(i);
+            CartaPropriedade p = jogador.getPropriedades().get(i);
             if (i > 0) {
                 resultado = resultado + ", ";
             }
@@ -411,7 +412,7 @@ public class Main {
         
         // Se tem seguro e é evento ruim, usa o seguro
         if (atual.temSeguro() && ehEventoRuim) {
-            atual.setSeguro(false);
+            atual.setSeguro(null);
             JOptionPane.showMessageDialog(null,
                     "Seu seguro foi acionado!\n" +
                     "Você está protegido desta vez.",
